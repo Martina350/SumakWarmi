@@ -1,30 +1,96 @@
 @import "tailwindcss";
 
+:root {
+  --brand-primary: #D52C69;
+  --brand-secondary: #EE839F;
+  --brand-hover: #A91E50;
+  --brand-light: #FBE7ED;
+
+  --background: #FFFFFF;
+  --background-soft: #FFF7F9;
+
+  --surface: #FFFFFF;
+  --surface-muted: #F4F0F2;
+
+  --text-primary: #241B24;
+  --text-secondary: #665D65;
+  --text-on-brand: #FFFFFF;
+
+  --border: #E9DFE4;
+
+  --success: #267A59;
+  --success-light: #E8F3EE;
+
+  --warning: #9A6200;
+  --warning-light: #FFF1D9;
+
+  --error: #B42336;
+  --error-light: #FDEBED;
+
+  --info: #2563A6;
+  --info-light: #EAF3FF;
+
+  --radius-card: 20px;
+  --radius-button: 12px;
+  --radius-input: 12px;
+
+  /* Aliases for backwards compatibility */
+  --brand-primary-hover: var(--brand-hover);
+  --brand-accent: var(--brand-secondary);
+  --surface-page: var(--background);
+  --surface-subtle: var(--background-soft);
+  --surface-white: var(--surface);
+  --text-muted: var(--text-secondary);
+  --danger: var(--error);
+}
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif-display: 'Plus Jakarta Sans', sans-serif;
+
+  --color-brand-primary: #D52C69;
+  --color-brand-secondary: #EE839F;
+  --color-brand-hover: #A91E50;
+  --color-brand-light: #FBE7ED;
+
+  --color-background-soft: #FFF7F9;
+  --color-surface-muted: #F4F0F2;
+
+  --color-text-primary: #241B24;
+  --color-text-secondary: #665D65;
+  --color-text-on-brand: #FFFFFF;
+
+  --color-border-custom: #E9DFE4;
+
+  --color-semantic-success: #267A59;
+  --color-semantic-success-light: #E8F3EE;
+  --color-semantic-warning: #9A6200;
+  --color-semantic-warning-light: #FFF1D9;
+  --color-semantic-error: #B42336;
+  --color-semantic-error-light: #FDEBED;
+  --color-semantic-info: #2563A6;
+  --color-semantic-info-light: #EAF3FF;
+}
+
 @layer base {
-  :root {
-    --brand-primary: #7A3F65;
-    --brand-primary-hover: #653353;
-    --brand-secondary: #DDAAB9;
-    --brand-accent: #A7B8A0;
-    --surface-page: #FFFDFB;
-    --surface-subtle: #F9F1F3;
-    --surface-white: #FFFFFF;
-    --text-primary: #272329;
-    --text-muted: #716A70;
-    --border: #E9DEE3;
-    --success: #287A56;
-    --warning: #9A6414;
-    --danger: #B43D4C;
-  }
-
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--surface-page);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--background);
     color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, .font-serif-display {
-    font-family: 'Fraunces', Georgia, serif;
+  h1, h2, h3, h4, h5, h6, .font-serif-display, .font-heading {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  p, span, label, input, button, select, textarea, table {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
   .font-data {

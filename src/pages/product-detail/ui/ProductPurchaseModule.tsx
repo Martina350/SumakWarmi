@@ -31,22 +31,22 @@ export const ProductPurchaseModule: React.FC<ProductPurchaseModuleProps> = ({ pr
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E9DEE3] p-6 lg:p-8 space-y-6 text-left shadow-xs">
+    <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-6 lg:p-8 space-y-6 text-left shadow-xs">
       <div>
-        <div className="flex items-center gap-2 text-xs text-[#716A70] mb-1.5">
+        <div className="flex items-center gap-2 text-xs text-[#665D65] mb-1.5 font-medium">
           <span>{product.categoryName}</span>
           <span aria-hidden="true">·</span>
           <span>SKU: {selectedVariant.sku}</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-serif-display font-bold text-[#272329] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-heading font-bold text-[#241B24] leading-tight">
           {product.name}
         </h1>
         <div className="mt-3 flex items-baseline gap-3">
-          <span className="text-2xl font-bold text-[#7A3F65] font-data">
+          <span className="text-2xl font-bold text-[#A91E50] font-data">
             {formatCurrency(price)}
           </span>
           {price === null && (
-            <span className="text-xs text-[#9A6414] font-medium">
+            <span className="text-xs text-[#9A6200] font-medium">
               Precio sujeto a confirmación
             </span>
           )}
@@ -55,17 +55,17 @@ export const ProductPurchaseModule: React.FC<ProductPurchaseModuleProps> = ({ pr
 
       {product.variants.length > 1 && (
         <div className="space-y-2">
-          <label className="text-xs font-bold text-[#716A70] uppercase">Selecciona tu variante o talla</label>
+          <label className="text-xs font-bold text-[#665D65] uppercase">Selecciona tu variante o talla</label>
           <div className="space-y-2">
             {product.variants.map((v) => (
               <button
                 key={v.id}
                 type="button"
                 onClick={() => setSelectedVariant(v)}
-                className={`w-full p-3 rounded-xl border text-left text-xs font-medium flex justify-between items-center transition-all ${
+                className={`w-full p-3 rounded-xl border text-left text-xs font-medium flex justify-between items-center transition-all cursor-pointer ${
                   selectedVariant.id === v.id
-                    ? 'border-[#7A3F65] bg-[#F9F1F3] text-[#7A3F65] font-semibold ring-1 ring-[#7A3F65]'
-                    : 'border-[#E9DEE3] text-[#272329] hover:bg-[#FFFDFB]'
+                    ? 'border-[#D52C69] bg-[#FBE7ED] text-[#A91E50] font-semibold ring-1 ring-[#D52C69]'
+                    : 'border-[#E9DFE4] text-[#241B24] hover:bg-[#FFF7F9]'
                 }`}
               >
                 <span>{v.name}</span>
@@ -76,19 +76,21 @@ export const ProductPurchaseModule: React.FC<ProductPurchaseModuleProps> = ({ pr
         </div>
       )}
 
-      <div className="space-y-3 pt-2 border-t border-[#E9DEE3]">
+      <div className="space-y-3 pt-2 border-t border-[#E9DFE4]">
         <div className="flex items-center gap-4">
-          <div className="flex items-center border border-[#E9DEE3] rounded-xl bg-white overflow-hidden h-12">
+          <div className="flex items-center border border-[#E9DFE4] rounded-xl bg-white overflow-hidden h-11">
             <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="w-10 h-full flex items-center justify-center text-[#716A70] hover:bg-[#F9F1F3]"
+              className="w-10 h-full flex items-center justify-center text-[#665D65] hover:bg-[#FFF7F9] cursor-pointer"
+              aria-label="Disminuir cantidad"
             >
               <Minus className="w-4 h-4" />
             </button>
-            <span className="w-10 text-center font-bold text-sm font-data">{quantity}</span>
+            <span className="w-10 text-center font-bold text-sm font-data text-[#241B24]">{quantity}</span>
             <button
               onClick={() => setQuantity(quantity + 1)}
-              className="w-10 h-full flex items-center justify-center text-[#716A70] hover:bg-[#F9F1F3]"
+              className="w-10 h-full flex items-center justify-center text-[#665D65] hover:bg-[#FFF7F9] cursor-pointer"
+              aria-label="Aumentar cantidad"
             >
               <Plus className="w-4 h-4" />
             </button>
@@ -108,20 +110,20 @@ export const ProductPurchaseModule: React.FC<ProductPurchaseModuleProps> = ({ pr
 
         <button
           onClick={onOpenAdvice}
-          className="w-full flex items-center justify-center gap-2 py-2 text-xs font-semibold text-[#7A3F65] hover:underline"
+          className="w-full flex items-center justify-center gap-2 py-2 text-xs font-semibold text-[#A91E50] hover:text-[#D52C69] hover:underline cursor-pointer"
         >
-          <MessageSquareHeart className="w-4 h-4" />
+          <MessageSquareHeart className="w-4 h-4 text-[#D52C69]" />
           <span>¿Tienes dudas con este producto? Solicita asesoría personalizada</span>
         </button>
       </div>
 
-      <div className="pt-4 border-t border-[#E9DEE3] space-y-2 text-xs text-[#716A70]">
+      <div className="pt-4 border-t border-[#E9DFE4] space-y-2 text-xs text-[#665D65]">
         <div className="flex items-center gap-2">
-          <Truck className="w-4 h-4 text-[#7A3F65] shrink-0" />
+          <Truck className="w-4 h-4 text-[#A91E50] shrink-0" />
           <span>Entrega por Servientrega en 24 a 72h laborables en Ecuador.</span>
         </div>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-[#287A56] shrink-0" />
+          <ShieldCheck className="w-4 h-4 text-[#267A59] shrink-0" />
           <span>Garantía de originalidad y embalaje discreto de protección.</span>
         </div>
       </div>

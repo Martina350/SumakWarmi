@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface BadgeProps {
   children: React.ReactNode;
-  tone?: 'neutral' | 'brand' | 'success' | 'warning' | 'danger';
+  tone?: 'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info';
   className?: string;
   icon?: React.ReactNode;
 }
@@ -14,16 +14,17 @@ export const Badge: React.FC<BadgeProps> = ({
   icon,
 }) => {
   const tones = {
-    neutral: 'bg-[#F9F1F3] text-[#716A70] border-[#E9DEE3]',
-    brand: 'bg-[#7A3F65]/10 text-[#7A3F65] border-[#7A3F65]/20',
-    success: 'bg-[#287A56]/10 text-[#287A56] border-[#287A56]/20',
-    warning: 'bg-[#9A6414]/10 text-[#9A6414] border-[#9A6414]/20',
-    danger: 'bg-[#B43D4C]/10 text-[#B43D4C] border-[#B43D4C]/20',
+    neutral: 'bg-[#F4F0F2] text-[#665D65] border-[#E9DFE4]',
+    brand: 'bg-[#FBE7ED] text-[#A91E50] border-[#EE839F]/30',
+    success: 'bg-[#E8F3EE] text-[#267A59] border-[#267A59]/20',
+    warning: 'bg-[#FFF1D9] text-[#9A6200] border-[#9A6200]/20',
+    danger: 'bg-[#FDEBED] text-[#B42336] border-[#B42336]/20',
+    info: 'bg-[#EAF3FF] text-[#2563A6] border-[#2563A6]/20',
   };
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium border ${tones[tone]} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${tones[tone]} ${className}`}
     >
       {icon && <span className="w-3.5 h-3.5 shrink-0 flex items-center justify-center">{icon}</span>}
       <span className="whitespace-nowrap">{children}</span>

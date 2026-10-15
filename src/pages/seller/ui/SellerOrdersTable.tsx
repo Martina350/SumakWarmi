@@ -1,6 +1,6 @@
 import React from 'react';
 import { Order } from '../../../shared/types/index.ts';
-import { formatCurrency, formatShortDate } from '../../../shared/lib/formatters.ts';
+import { formatCurrency } from '../../../shared/lib/formatters.ts';
 import { getPaymentStatusLabel, getShipmentStatusLabel } from '../../../shared/lib/statusLabels.ts';
 import { Badge } from '../../../shared/ui/Badge.tsx';
 import { Button } from '../../../shared/ui/Button.tsx';
@@ -26,7 +26,7 @@ export const SellerOrdersTable: React.FC<SellerOrdersTableProps> = ({
 }) => {
   if (orders.length === 0) {
     return (
-      <div className="p-8 text-center bg-white rounded-xl border border-[#E9DEE3] text-xs text-[#716A70]">
+      <div className="p-8 text-center bg-white rounded-xl border border-[#E9DFE4] text-xs text-[#665D65]">
         No hay pedidos en esta bandeja en este momento.
       </div>
     );
@@ -53,12 +53,12 @@ export const SellerOrdersTable: React.FC<SellerOrdersTableProps> = ({
 
           return (
             <Tr key={ord.id}>
-              <Td className="font-data font-bold text-[#272329]">{ord.orderNumber}</Td>
+              <Td className="font-data font-bold text-[#241B24]">{ord.orderNumber}</Td>
               <Td>
-                <div className="font-semibold text-xs text-[#272329]">{ord.customerName}</div>
-                <div className="text-[11px] text-[#716A70]">{ord.shippingAddressSnapshot.city}</div>
+                <div className="font-semibold text-xs text-[#241B24]">{ord.customerName}</div>
+                <div className="text-[11px] text-[#665D65]">{ord.shippingAddressSnapshot.city}</div>
               </Td>
-              <Td className="font-data font-bold text-[#7A3F65]">{formatCurrency(ord.total)}</Td>
+              <Td className="font-data font-bold text-[#A91E50]">{formatCurrency(ord.total)}</Td>
               <Td>
                 <Badge tone={payLabel.tone}>{payLabel.label}</Badge>
               </Td>
@@ -67,11 +67,11 @@ export const SellerOrdersTable: React.FC<SellerOrdersTableProps> = ({
               </Td>
               <Td className="text-xs">
                 {ord.assignedSellerName ? (
-                  <span className={isMine ? 'font-bold text-[#7A3F65]' : 'text-[#716A70]'}>
+                  <span className={isMine ? 'font-bold text-[#A91E50]' : 'text-[#665D65]'}>
                     {ord.assignedSellerName}
                   </span>
                 ) : (
-                  <span className="text-[#9A6414] font-medium">Sin asignar</span>
+                  <span className="text-[#9A6200] font-medium">Sin asignar</span>
                 )}
               </Td>
               <Td className="text-right">

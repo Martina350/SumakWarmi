@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSessionStore, sessionActions } from '../../../entities/session/index.ts';
 import { Button } from '../../../shared/ui/Button.tsx';
 import { Input } from '../../../shared/ui/Input.tsx';
-import { UserCheck, ShieldCheck } from 'lucide-react';
 
 interface AuthPageProps {
   onNavigate: (path: string) => void;
@@ -31,18 +30,18 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-12 text-left space-y-6">
+    <div className="max-w-md mx-auto px-4 py-12 text-left space-y-6 bg-white">
       <div className="text-center">
-        <h1 className="text-2xl font-serif-display font-bold text-[#272329]">
+        <h1 className="text-2xl font-heading font-bold text-[#241B24]">
           {mode === 'login' ? 'Acceso a SUMAKWARMI' : 'Crear tu cuenta'}
         </h1>
-        <p className="text-xs text-[#716A70] mt-1">
+        <p className="text-xs text-[#665D65] mt-1">
           {mode === 'login' ? 'Selecciona una cuenta de demostración o regístrate' : 'Completa tus datos para tu primera compra'}
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#E9DEE3] p-6 space-y-4 shadow-xs">
-        <span className="text-xs font-bold text-[#716A70] uppercase block">
+      <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-6 space-y-4 shadow-xs">
+        <span className="text-xs font-bold text-[#665D65] uppercase block">
           Acceso rápido por perfil demo
         </span>
         <div className="space-y-2">
@@ -50,20 +49,22 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onNavigate }) => {
             <button
               key={u.id}
               onClick={() => handleQuickSelect(u.id)}
-              className="w-full p-3 rounded-xl border border-[#E9DEE3] hover:border-[#7A3F65] hover:bg-[#F9F1F3]/40 transition-colors text-left flex justify-between items-center text-xs"
+              className="w-full p-3 rounded-xl border border-[#E9DFE4] hover:border-[#D52C69] hover:bg-[#FFF7F9] transition-all text-left flex justify-between items-center text-xs cursor-pointer group"
             >
               <div>
-                <span className="font-semibold text-[#272329] block">{u.name}</span>
-                <span className="text-[#716A70] text-[11px]">{u.email}</span>
+                <span className="font-semibold text-[#241B24] group-hover:text-[#D52C69] transition-colors block">
+                  {u.name}
+                </span>
+                <span className="text-[#665D65] text-[11px]">{u.email}</span>
               </div>
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#F9F1F3] text-[#7A3F65]">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FBE7ED] text-[#A91E50] border border-[#EE839F]/20">
                 {u.role}
               </span>
             </button>
           ))}
         </div>
 
-        <div className="pt-4 border-t border-[#E9DEE3]">
+        <div className="pt-4 border-t border-[#E9DFE4]">
           {mode === 'register' ? (
             <form onSubmit={handleRegister} className="space-y-3">
               <Input label="Nombre completo" required value={name} onChange={(e) => setName(e.target.value)} />
@@ -72,12 +73,19 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onNavigate }) => {
               <Button type="submit" variant="primary" size="md" className="w-full">
                 Crear cuenta
               </Button>
-              <button type="button" onClick={() => setMode('login')} className="w-full text-xs text-[#7A3F65] underline pt-1">
+              <button
+                type="button"
+                onClick={() => setMode('login')}
+                className="w-full text-xs text-[#A91E50] hover:text-[#D52C69] underline pt-1 cursor-pointer"
+              >
                 ¿Ya tienes cuenta? Volver
               </button>
             </form>
           ) : (
-            <button onClick={() => setMode('register')} className="w-full text-xs text-[#7A3F65] font-semibold hover:underline">
+            <button
+              onClick={() => setMode('register')}
+              className="w-full text-xs text-[#A91E50] hover:text-[#D52C69] font-semibold hover:underline cursor-pointer text-center block pt-1"
+            >
               ¿Deseas registrar un nuevo cliente de prueba? Haz clic aquí
             </button>
           )}

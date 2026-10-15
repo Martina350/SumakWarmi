@@ -19,7 +19,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenAdvice }) 
   const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 6);
 
   return (
-    <div className="space-y-0 text-left">
+    <div className="space-y-0 text-left bg-white">
       <HeroSection
         onExplore={() => onNavigate('/tienda')}
         onOpenAdvice={onOpenAdvice}
@@ -35,11 +35,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenAdvice }) 
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7A3F65] uppercase tracking-wider mb-1">
-              <Sparkles className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#A91E50] uppercase tracking-wider mb-1">
+              <Sparkles className="w-3.5 h-3.5 text-[#D52C69]" />
               <span>Selección destacada</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-serif-display font-bold text-[#272329]">
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-[#241B24]">
               Los favoritos de nuestra comunidad
             </h2>
           </div>

@@ -22,8 +22,8 @@ export const AdminCatalogTab: React.FC = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-base font-bold text-[#272329]">Catálogo y Precios Oficiales</h3>
-          <p className="text-xs text-[#716A70]">Edita precios de referencia y variantes antes de la compra pública.</p>
+          <h3 className="text-base font-bold text-[#241B24] font-heading">Catálogo y Precios Oficiales</h3>
+          <p className="text-xs text-[#665D65]">Edita precios de referencia y variantes antes de la compra pública.</p>
         </div>
       </div>
 
@@ -44,12 +44,12 @@ export const AdminCatalogTab: React.FC = () => {
               const isEditing = editingVariant?.prodId === prod.id && editingVariant?.varId === v.id;
               return (
                 <Tr key={v.id}>
-                  <Td className="font-semibold text-xs text-[#272329]">{prod.name}</Td>
-                  <Td className="text-xs text-[#716A70]">{prod.categoryName}</Td>
+                  <Td className="font-semibold text-xs text-[#241B24]">{prod.name}</Td>
+                  <Td className="text-xs text-[#665D65]">{prod.categoryName}</Td>
                   <Td className="text-xs">
-                    <span className="font-data text-[#7A3F65] font-medium">{v.sku}</span> · {v.name}
+                    <span className="font-data text-[#A91E50] font-medium">{v.sku}</span> · {v.name}
                   </Td>
-                  <Td className="font-data font-bold text-xs text-[#272329]">
+                  <Td className="font-data font-bold text-xs text-[#241B24]">
                     {isEditing && editingVariant ? (
                       <div className="flex items-center gap-1 w-24">
                         <Input
@@ -63,7 +63,7 @@ export const AdminCatalogTab: React.FC = () => {
                     ) : v.price !== null ? (
                       formatCurrency(v.price)
                     ) : (
-                      <span className="text-[#9A6414] text-[11px] font-medium flex items-center gap-1">
+                      <span className="text-[#9A6200] text-[11px] font-medium flex items-center gap-1">
                         <AlertCircle className="w-3.5 h-3.5" />
                         Sin precio
                       </span>

@@ -40,57 +40,57 @@ export const TransferVerificationModal: React.FC<TransferVerificationModalProps>
       maxWidth="md"
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="p-3.5 bg-[#F9F1F3] rounded-xl border border-[#E9DEE3] text-xs space-y-1">
-          <div className="flex justify-between font-bold text-[#272329]">
+        <div className="p-3.5 bg-[#FFF7F9] rounded-xl border border-[#E9DFE4] text-xs space-y-1">
+          <div className="flex justify-between font-bold text-[#241B24]">
             <span>Total esperado:</span>
-            <span className="font-data text-[#7A3F65]">{formatCurrency(order.total)}</span>
+            <span className="font-data text-[#A91E50]">{formatCurrency(order.total)}</span>
           </div>
           <p><strong>Cliente:</strong> {order.customerName} ({order.customerEmail})</p>
-          <div className="flex items-center gap-1.5 text-[#7A3F65] pt-1">
+          <div className="flex items-center gap-1.5 text-[#D52C69] pt-1">
             <FileText className="w-3.5 h-3.5" />
-            <span className="font-medium">
+            <span className="font-semibold">
               {payment?.proof?.fileName || 'comprobante_bancario_cliente.jpg'}
             </span>
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-bold text-[#716A70] uppercase">Resolución operativa</label>
+          <label className="text-xs font-bold text-[#665D65] uppercase">Resolución operativa</label>
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
               onClick={() => setAction('APPROVE')}
-              className={`p-2.5 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all ${
+              className={`p-2.5 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                 action === 'APPROVE'
-                  ? 'bg-[#287A56]/10 border-[#287A56] text-[#287A56]'
-                  : 'border-[#E9DEE3] text-[#716A70] hover:bg-[#F9F1F3]'
+                  ? 'bg-[#E8F3EE] border-[#267A59] text-[#267A59] shadow-2xs ring-1 ring-[#267A59]'
+                  : 'border-[#E9DFE4] text-[#665D65] hover:bg-[#FFF7F9]'
               }`}
             >
-              <CheckCircle className="w-4 h-4" />
+              <CheckCircle className="w-4 h-4 text-[#267A59]" />
               <span>Aprobar pago</span>
             </button>
             <button
               type="button"
               onClick={() => setAction('REQUIRE_CORRECTION')}
-              className={`p-2.5 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all ${
+              className={`p-2.5 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                 action === 'REQUIRE_CORRECTION'
-                  ? 'bg-[#9A6414]/10 border-[#9A6414] text-[#9A6414]'
-                  : 'border-[#E9DEE3] text-[#716A70] hover:bg-[#F9F1F3]'
+                  ? 'bg-[#FFF1D9] border-[#9A6200] text-[#9A6200] shadow-2xs ring-1 ring-[#9A6200]'
+                  : 'border-[#E9DFE4] text-[#665D65] hover:bg-[#FFF7F9]'
               }`}
             >
-              <AlertCircle className="w-4 h-4" />
+              <AlertCircle className="w-4 h-4 text-[#9A6200]" />
               <span>Pedir corrección</span>
             </button>
             <button
               type="button"
               onClick={() => setAction('REJECT')}
-              className={`p-2.5 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all ${
+              className={`p-2.5 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                 action === 'REJECT'
-                  ? 'bg-[#B43D4C]/10 border-[#B43D4C] text-[#B43D4C]'
-                  : 'border-[#E9DEE3] text-[#716A70] hover:bg-[#F9F1F3]'
+                  ? 'bg-[#FDEBED] border-[#B42336] text-[#B42336] shadow-2xs ring-1 ring-[#B42336]'
+                  : 'border-[#E9DFE4] text-[#665D65] hover:bg-[#FFF7F9]'
               }`}
             >
-              <XCircle className="w-4 h-4" />
+              <XCircle className="w-4 h-4 text-[#B42336]" />
               <span>Rechazar</span>
             </button>
           </div>

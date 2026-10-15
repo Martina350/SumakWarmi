@@ -47,23 +47,23 @@ export const CheckoutAddressStep: React.FC<CheckoutAddressStepProps> = ({
             <div
               key={addr.id}
               onClick={() => onSelectAddress(addr)}
-              className={`p-4 rounded-xl border text-left cursor-pointer transition-all ${
+              className={`p-4 rounded-xl border text-left cursor-pointer transition-all duration-200 ${
                 isSelected
-                  ? 'border-[#7A3F65] bg-[#F9F1F3]/40 ring-1 ring-[#7A3F65]'
-                  : 'border-[#E9DEE3] hover:border-[#7A3F65]/40 bg-white'
+                  ? 'border-[#D52C69] bg-[#FFF7F9] ring-1 ring-[#D52C69]'
+                  : 'border-[#E9DFE4] hover:border-[#EE839F] bg-white'
               }`}
             >
               <div className="flex items-start justify-between">
-                <div className="flex items-center gap-1.5 font-semibold text-sm text-[#272329]">
-                  <MapPin className="w-4 h-4 text-[#7A3F65]" />
+                <div className="flex items-center gap-1.5 font-semibold text-sm text-[#241B24]">
+                  <MapPin className="w-4 h-4 text-[#D52C69]" />
                   <span>{addr.recipientName}</span>
                 </div>
-                {isSelected && <Check className="w-4 h-4 text-[#7A3F65]" />}
+                {isSelected && <Check className="w-4 h-4 text-[#D52C69]" />}
               </div>
-              <p className="text-xs text-[#716A70] mt-1.5 leading-relaxed">
+              <p className="text-xs text-[#665D65] mt-1.5 leading-relaxed">
                 {addr.mainStreet} {addr.reference && `(${addr.reference})`}
               </p>
-              <p className="text-xs text-[#716A70] mt-1">
+              <p className="text-xs text-[#665D65] mt-1">
                 {addr.city}, {addr.province} · {addr.phone}
               </p>
             </div>
@@ -84,8 +84,8 @@ export const CheckoutAddressStep: React.FC<CheckoutAddressStepProps> = ({
       )}
 
       {showNewForm && (
-        <form onSubmit={handleCreate} className="p-4 bg-white rounded-xl border border-[#E9DEE3] space-y-3">
-          <h4 className="text-xs font-bold text-[#716A70] uppercase">Nueva dirección de entrega</h4>
+        <form onSubmit={handleCreate} className="p-4 bg-white rounded-xl border border-[#E9DFE4] space-y-3">
+          <h4 className="text-xs font-bold text-[#665D65] uppercase">Nueva dirección de entrega</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               label="Nombre del destinatario"

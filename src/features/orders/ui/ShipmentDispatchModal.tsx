@@ -38,13 +38,13 @@ export const ShipmentDispatchModal: React.FC<ShipmentDispatchModalProps> = ({
       maxWidth="md"
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="p-3.5 bg-[#F9F1F3] rounded-xl border border-[#E9DEE3] text-xs space-y-1">
-          <div className="flex items-center gap-1.5 font-bold text-[#7A3F65]">
-            <MapPin className="w-3.5 h-3.5" />
+        <div className="p-3.5 bg-[#FFF7F9] rounded-xl border border-[#E9DFE4] text-xs space-y-1">
+          <div className="flex items-center gap-1.5 font-bold text-[#A91E50]">
+            <MapPin className="w-3.5 h-3.5 text-[#D52C69]" />
             <span>Destino: {order.shippingAddressSnapshot.city}, {order.shippingAddressSnapshot.province}</span>
           </div>
           <p><strong>Destinatario:</strong> {order.shippingAddressSnapshot.recipientName} ({order.shippingAddressSnapshot.phone})</p>
-          <p><strong>Dirección:</strong> {order.shippingAddressSnapshot.mainStreet}</p>
+          <p className="text-[#665D65]"><strong>Dirección:</strong> {order.shippingAddressSnapshot.mainStreet}</p>
         </div>
 
         <Input

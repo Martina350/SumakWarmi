@@ -29,8 +29,8 @@ export const AdminSellersTab: React.FC = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-base font-bold text-[#272329]">Equipo Comercial y Vendedores</h3>
-          <p className="text-xs text-[#716A70]">Gestiona accesos operativos y asignación de pedidos.</p>
+          <h3 className="text-base font-bold text-[#241B24] font-heading">Equipo Comercial y Vendedores</h3>
+          <p className="text-xs text-[#665D65]">Gestiona accesos operativos y asignación de pedidos.</p>
         </div>
         <Button size="sm" variant="primary" icon={<UserPlus className="w-3.5 h-3.5" />} onClick={() => setShowAddForm(true)}>
           Nuevo vendedor
@@ -38,8 +38,8 @@ export const AdminSellersTab: React.FC = () => {
       </div>
 
       {showAddForm && (
-        <form onSubmit={handleCreateSeller} className="p-4 bg-white rounded-xl border border-[#E9DEE3] space-y-3">
-          <h4 className="text-xs font-bold text-[#716A70] uppercase">Registrar cuenta de vendedor</h4>
+        <form onSubmit={handleCreateSeller} className="p-4 bg-white rounded-xl border border-[#E9DFE4] space-y-3 shadow-2xs">
+          <h4 className="text-xs font-bold text-[#665D65] uppercase">Registrar cuenta de vendedor</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Input label="Nombre completo" required value={name} onChange={(e) => setName(e.target.value)} />
             <Input label="Correo electrónico" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -64,8 +64,8 @@ export const AdminSellersTab: React.FC = () => {
         <Tbody>
           {sellers.map((s) => (
             <Tr key={s.id}>
-              <Td className="font-semibold text-xs text-[#272329]">{s.name}</Td>
-              <Td className="text-xs text-[#716A70]">{s.email} · {s.phone}</Td>
+              <Td className="font-semibold text-xs text-[#241B24]">{s.name}</Td>
+              <Td className="text-xs text-[#665D65]">{s.email} · {s.phone}</Td>
               <Td>
                 <Badge tone={s.isActive ? 'success' : 'danger'}>
                   {s.isActive ? 'Activo' : 'Desactivado'}

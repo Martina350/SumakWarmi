@@ -42,25 +42,25 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto animate-fadeIn">
       <div
-        className="fixed inset-0 bg-[#272329]/60 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-[#241B24]/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
       <div
-        className={`relative w-full ${widths[maxWidth]} bg-white rounded-2xl border border-[#E9DEE3] shadow-xl p-6 sm:p-8 z-10 my-8`}
+        className={`relative w-full ${widths[maxWidth]} bg-white rounded-[20px] border border-[#E9DFE4] shadow-xl p-6 sm:p-8 z-10 my-8 transition-transform duration-200`}
         role="dialog"
         aria-modal="true"
       >
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
-            {title && <h3 className="text-xl font-bold text-[#272329] font-serif-display">{title}</h3>}
-            {description && <p className="text-sm text-[#716A70] mt-1">{description}</p>}
+            {title && <h3 className="text-xl font-bold text-[#241B24] font-heading">{title}</h3>}
+            {description && <p className="text-xs sm:text-sm text-[#665D65] mt-1">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#716A70] hover:text-[#272329] hover:bg-[#F9F1F3] transition-colors"
+            className="p-1.5 rounded-lg text-[#665D65] hover:text-[#241B24] hover:bg-[#FBE7ED] transition-colors cursor-pointer"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" />

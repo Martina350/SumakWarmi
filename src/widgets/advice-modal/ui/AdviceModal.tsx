@@ -36,20 +36,22 @@ export const AdviceModal: React.FC<AdviceModalProps> = ({ isOpen, onClose }) => 
     >
       {isSent ? (
         <div className="py-8 text-center space-y-3">
-          <CheckCircle2 className="w-12 h-12 text-[#287A56] mx-auto" />
-          <h4 className="text-base font-bold text-[#272329]">¡Mensaje recibido!</h4>
-          <p className="text-xs text-[#716A70] max-w-sm mx-auto">
+          <CheckCircle2 className="w-12 h-12 text-[#267A59] mx-auto" />
+          <h4 className="text-base font-bold text-[#241B24] font-heading">¡Mensaje recibido!</h4>
+          <p className="text-xs text-[#665D65] max-w-sm mx-auto leading-relaxed">
             Una asesora de SUMAKWARMI revisará tu consulta para brindarte una orientación cercana y respetuosa.
           </p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-[#716A70] uppercase">¿En qué tema necesitas apoyo?</label>
+          <div className="space-y-1.5 text-left">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#665D65]">
+              ¿En qué tema necesitas apoyo?
+            </label>
             <select
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              className="w-full h-11 px-3 bg-white border border-[#E9DEE3] rounded-xl text-xs text-[#272329]"
+              className="w-full h-11 px-3 bg-white border border-[#E9DFE4] rounded-xl text-xs text-[#241B24] focus:outline-none focus:ring-2 focus:ring-[#D52C69]/20 focus:border-[#D52C69] cursor-pointer"
             >
               <option value="Primera copa menstrual">Mi primera copa menstrual (talla y colocación)</option>
               <option value="Disco vs Copa">Diferencias entre Copa y Disco menstrual</option>

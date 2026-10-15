@@ -19,40 +19,40 @@ export const AdminKpiGrid: React.FC<AdminKpiGridProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="bg-white p-5 rounded-2xl border border-[#E9DEE3] space-y-1">
-        <div className="flex items-center justify-between text-xs text-[#716A70]">
+      <div className="bg-white p-5 rounded-[20px] border border-[#E9DFE4] space-y-1 shadow-2xs">
+        <div className="flex items-center justify-between text-xs text-[#665D65]">
           <span>Ventas netas pagadas</span>
-          <DollarSign className="w-4 h-4 text-[#287A56]" />
+          <DollarSign className="w-4 h-4 text-[#267A59]" />
         </div>
-        <p className="text-2xl font-bold text-[#287A56] font-data">{formatCurrency(totalPaidRevenue)}</p>
-        <span className="text-[11px] text-[#716A70]">{paidOrdersCount} pedidos aprobados</span>
+        <p className="text-2xl font-bold text-[#267A59] font-data">{formatCurrency(totalPaidRevenue)}</p>
+        <span className="text-[11px] text-[#665D65]">{paidOrdersCount} pedidos aprobados</span>
       </div>
 
-      <div className="bg-white p-5 rounded-2xl border border-[#E9DEE3] space-y-1">
-        <div className="flex items-center justify-between text-xs text-[#716A70]">
+      <div className="bg-white p-5 rounded-[20px] border border-[#E9DFE4] space-y-1 shadow-2xs">
+        <div className="flex items-center justify-between text-xs text-[#665D65]">
           <span>Total pedidos</span>
-          <ShoppingBag className="w-4 h-4 text-[#7A3F65]" />
+          <ShoppingBag className="w-4 h-4 text-[#D52C69]" />
         </div>
-        <p className="text-2xl font-bold text-[#272329] font-data">{totalOrdersCount}</p>
-        <span className="text-[11px] text-[#716A70]">Histórico en plataforma</span>
+        <p className="text-2xl font-bold text-[#241B24] font-data">{totalOrdersCount}</p>
+        <span className="text-[11px] text-[#665D65]">Histórico en plataforma</span>
       </div>
 
-      <div className="bg-white p-5 rounded-2xl border border-[#E9DEE3] space-y-1">
-        <div className="flex items-center justify-between text-xs text-[#716A70]">
+      <div className="bg-white p-5 rounded-[20px] border border-[#E9DFE4] space-y-1 shadow-2xs">
+        <div className="flex items-center justify-between text-xs text-[#665D65]">
           <span>Ticket promedio</span>
-          <DollarSign className="w-4 h-4 text-[#7A3F65]" />
+          <DollarSign className="w-4 h-4 text-[#A91E50]" />
         </div>
-        <p className="text-2xl font-bold text-[#7A3F65] font-data">{formatCurrency(avgTicket)}</p>
-        <span className="text-[11px] text-[#716A70]">Por pedido pagado</span>
+        <p className="text-2xl font-bold text-[#A91E50] font-data">{formatCurrency(avgTicket)}</p>
+        <span className="text-[11px] text-[#665D65]">Por pedido pagado</span>
       </div>
 
-      <div className="bg-white p-5 rounded-2xl border border-[#E9DEE3] space-y-1">
-        <div className="flex items-center justify-between text-xs text-[#716A70]">
+      <div className="bg-white p-5 rounded-[20px] border border-[#E9DFE4] space-y-1 shadow-2xs">
+        <div className="flex items-center justify-between text-xs text-[#665D65]">
           <span>Alertas de stock</span>
-          <AlertTriangle className="w-4 h-4 text-[#B43D4C]" />
+          <AlertTriangle className="w-4 h-4 text-[#B42336]" />
         </div>
-        <p className="text-2xl font-bold text-[#B43D4C] font-data">{lowStockCount}</p>
-        <span className="text-[11px] text-[#716A70]">Variantes bajo umbral</span>
+        <p className="text-2xl font-bold text-[#B42336] font-data">{lowStockCount}</p>
+        <span className="text-[11px] text-[#665D65]">Variantes bajo umbral</span>
       </div>
     </div>
   );

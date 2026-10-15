@@ -33,45 +33,45 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail 
   return (
     <div
       onClick={() => onViewDetail(product.slug)}
-      className="group flex flex-col bg-white rounded-2xl border border-[#E9DEE3] hover:border-[#7A3F65]/40 hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
+      className="group flex flex-col bg-white rounded-[20px] border border-[#E9DFE4] hover:border-[#EE839F] hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
     >
-      <div className="relative aspect-4/3 bg-gradient-to-br from-[#F9F1F3] to-[#FFFDFB] flex flex-col items-center justify-center p-6 text-center border-b border-[#E9DEE3]/60 group-hover:scale-[1.01] transition-transform">
-        <div className="w-14 h-14 rounded-2xl bg-white shadow-xs border border-[#E9DEE3] flex items-center justify-center text-[#7A3F65] mb-2">
+      <div className="relative aspect-4/3 bg-gradient-to-br from-[#FFF7F9] to-white flex flex-col items-center justify-center p-6 text-center border-b border-[#E9DFE4]/70 group-hover:scale-[1.01] transition-transform">
+        <div className="w-14 h-14 rounded-2xl bg-white shadow-2xs border border-[#E9DFE4] flex items-center justify-center text-[#D52C69] mb-2 group-hover:scale-105 transition-transform">
           <Sparkles className="w-6 h-6 stroke-[1.5]" />
         </div>
-        <span className="text-xs font-serif-display font-medium text-[#272329] max-w-[160px] line-clamp-1">
+        <span className="text-xs font-heading font-medium text-[#241B24] max-w-[160px] line-clamp-1">
           {product.name}
         </span>
-        <span className="text-[11px] text-[#716A70] mt-0.5">SUMAKWARMI · Ecuador</span>
+        <span className="text-[11px] text-[#665D65] mt-0.5">SUMAKWARMI · Ecuador</span>
       </div>
 
       <div className="p-5 flex-1 flex flex-col justify-between gap-4">
         <div>
-          <div className="flex items-center gap-1.5 text-xs text-[#716A70] mb-1">
+          <div className="flex items-center gap-1.5 text-xs text-[#665D65] mb-1">
             <span>{product.categoryName}</span>
           </div>
-          <h3 className="font-semibold text-base text-[#272329] group-hover:text-[#7A3F65] transition-colors line-clamp-1">
+          <h3 className="font-semibold text-base text-[#241B24] group-hover:text-[#D52C69] transition-colors line-clamp-1 font-heading">
             {product.name}
           </h3>
-          <p className="text-xs text-[#716A70] mt-1.5 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-[#665D65] mt-1.5 line-clamp-2 leading-relaxed">
             {product.summary}
           </p>
         </div>
 
-        <div className="space-y-3 pt-2 border-t border-[#E9DEE3]/70">
+        <div className="space-y-3 pt-2 border-t border-[#E9DFE4]/70">
           <div className="flex items-baseline justify-between">
-            <span className="text-sm font-bold text-[#7A3F65] font-data">
+            <span className="text-sm font-bold text-[#A91E50] font-data">
               {formatCurrency(price)}
             </span>
             {price === null ? (
-              <span className="text-[11px] text-[#9A6414] font-medium flex items-center gap-1">
+              <span className="text-[11px] text-[#9A6200] font-medium flex items-center gap-1">
                 <AlertCircle className="w-3 h-3" />
                 Precio por confirmar
               </span>
             ) : selectedVariant.stockActual <= 3 ? (
-              <span className="text-[11px] text-[#9A6414]">¡Últimas {selectedVariant.stockActual} unid.!</span>
+              <span className="text-[11px] text-[#9A6200] font-medium">¡Últimas {selectedVariant.stockActual} unid.!</span>
             ) : (
-              <span className="text-[11px] text-[#287A56]">Disponible</span>
+              <span className="text-[11px] text-[#267A59] font-medium">Disponible</span>
             )}
           </div>
 

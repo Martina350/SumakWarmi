@@ -11,22 +11,22 @@ export const CategoryTiles: React.FC<CategoryTilesProps> = ({ onSelectCategory }
       id: 'cat-menstrual',
       title: 'Cuidado Menstrual',
       description: 'Copas, discos, aplicadores, esterilizadores y pads lavables de larga duración.',
-      icon: <Moon className="w-6 h-6 text-[#7A3F65]" />,
-      bg: 'bg-gradient-to-br from-[#FFFDFB] to-[#F9F1F3]',
+      icon: <Moon className="w-6 h-6 text-[#D52C69]" />,
+      bg: 'bg-gradient-to-br from-white to-[#FFF7F9]',
     },
     {
       id: 'cat-corporal',
       title: 'Cuidado Corporal & Higiene',
       description: 'Espuma íntima con caléndula, compresas eléctricas y de gel para descanso pélvico.',
-      icon: <Sparkles className="w-6 h-6 text-[#7A3F65]" />,
-      bg: 'bg-gradient-to-br from-[#FFFDFB] to-[#F9F1F3]',
+      icon: <Sparkles className="w-6 h-6 text-[#D52C69]" />,
+      bg: 'bg-gradient-to-br from-white to-[#FFF7F9]',
     },
     {
       id: 'cat-alimenticio',
       title: 'Alimenticio & Infusiones',
       description: 'Chocolate con cacao fino ecuatoriano e infusiones botánicas para tus momentos de pausa.',
-      icon: <Coffee className="w-6 h-6 text-[#7A3F65]" />,
-      bg: 'bg-gradient-to-br from-[#FFFDFB] to-[#F9F1F3]',
+      icon: <Coffee className="w-6 h-6 text-[#D52C69]" />,
+      bg: 'bg-gradient-to-br from-white to-[#FFF7F9]',
     },
   ];
 
@@ -34,14 +34,14 @@ export const CategoryTiles: React.FC<CategoryTilesProps> = ({ onSelectCategory }
     <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 text-left">
         <div>
-          <span className="text-xs font-semibold text-[#7A3F65] uppercase tracking-wider">
+          <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">
             Líneas de producto
           </span>
-          <h2 className="text-2xl sm:text-3xl font-serif-display font-bold text-[#272329] mt-1">
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-[#241B24] mt-1">
             Explora por categoría
           </h2>
         </div>
-        <p className="text-xs text-[#716A70] max-w-md">
+        <p className="text-xs text-[#665D65] max-w-md">
           Presentaciones honestas, información clara de materiales y alternativas para cada preferencia íntima.
         </p>
       </div>
@@ -51,21 +51,21 @@ export const CategoryTiles: React.FC<CategoryTilesProps> = ({ onSelectCategory }
           <div
             key={c.id}
             onClick={() => onSelectCategory(c.id)}
-            className={`p-7 rounded-2xl border border-[#E9DEE3] ${c.bg} hover:border-[#7A3F65]/50 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between text-left group`}
+            className={`p-7 rounded-[20px] border border-[#E9DFE4] ${c.bg} hover:border-[#EE839F] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left group`}
           >
             <div>
-              <div className="w-12 h-12 rounded-xl bg-white border border-[#E9DEE3] flex items-center justify-center mb-5 shadow-xs group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 rounded-xl bg-white border border-[#E9DFE4] flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 group-hover:border-[#EE839F]/50 transition-all">
                 {c.icon}
               </div>
-              <h3 className="text-lg font-bold text-[#272329] group-hover:text-[#7A3F65] transition-colors">
+              <h3 className="text-lg font-bold text-[#241B24] group-hover:text-[#D52C69] transition-colors">
                 {c.title}
               </h3>
-              <p className="text-xs text-[#716A70] mt-2 leading-relaxed">
+              <p className="text-xs text-[#665D65] mt-2 leading-relaxed">
                 {c.description}
               </p>
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-semibold text-[#7A3F65] mt-6 pt-4 border-t border-[#E9DEE3]/70">
+            <div className="flex items-center gap-2 text-xs font-semibold text-[#A91E50] mt-6 pt-4 border-t border-[#E9DFE4]/70 group-hover:text-[#D52C69]">
               <span>Ver colección</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>

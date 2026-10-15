@@ -19,10 +19,10 @@ export const AdminDashboardPage: React.FC = () => {
 
   if (!currentUser || currentUser.role !== 'ADMIN') {
     return (
-      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4">
-        <ShieldAlert className="w-12 h-12 text-[#B43D4C] mx-auto" />
-        <h2 className="text-xl font-bold font-serif-display text-[#272329]">Panel exclusivo para Administrador</h2>
-        <p className="text-xs text-[#716A70]">Utiliza el selector superior para cambiar al rol de Mercedes Cañizares (ADMIN).</p>
+      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4 bg-white">
+        <ShieldAlert className="w-12 h-12 text-[#B42336] mx-auto" />
+        <h2 className="text-xl font-bold font-heading text-[#241B24]">Panel exclusivo para Administrador</h2>
+        <p className="text-xs text-[#665D65]">Utiliza el selector superior para cambiar al rol de Mercedes Cañizares (ADMIN).</p>
       </div>
     );
   }
@@ -33,14 +33,20 @@ export const AdminDashboardPage: React.FC = () => {
   const lowStockCount = products.reduce((count, p) => count + p.variants.filter((v) => v.stockActual <= v.stockMinimo).length, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8 bg-white">
       <div>
-        <span className="text-xs font-semibold text-[#7A3F65] uppercase tracking-wider">Dirección & Control Global</span>
-        <h1 className="text-3xl font-serif-display font-bold text-[#272329] mt-0.5">Panel de Administración · SUMAKWARMI</h1>
-        <p className="text-xs text-[#716A70]">Métricas comerciales, catálogo de productos, inventario y cuentas de equipo.</p>
+        <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Dirección & Control Global</span>
+        <h1 className="text-3xl font-heading font-bold text-[#241B24] mt-0.5">Panel de Administración · SUMAKWARMI</h1>
+        <p className="text-xs text-[#665D65]">Métricas comerciales, catálogo de productos, inventario y cuentas de equipo.</p>
       </div>
 
-      <AdminKpiGrid totalPaidRevenue={totalPaidRevenue} paidOrdersCount={paidOrders.length} totalOrdersCount={orders.length} avgTicket={avgTicket} lowStockCount={lowStockCount} />
+      <AdminKpiGrid
+        totalPaidRevenue={totalPaidRevenue}
+        paidOrdersCount={paidOrders.length}
+        totalOrdersCount={orders.length}
+        avgTicket={avgTicket}
+        lowStockCount={lowStockCount}
+      />
 
       <div className="space-y-4">
         <Tabs
@@ -55,21 +61,36 @@ export const AdminDashboardPage: React.FC = () => {
           onChange={setActiveTab}
         />
 
-        {activeTab === 'orders' && <SellerOrdersTable orders={orders} currentUserId={currentUser.id} onTakeOrder={() => {}} onOpenVerifyModal={() => {}} onOpenDispatchModal={() => {}} onMarkDelivered={() => {}} />}
+        {activeTab === 'orders' && (
+          <SellerOrdersTable
+            orders={orders}
+            currentUserId={currentUser.id}
+            onTakeOrder={() => {}}
+            onOpenVerifyModal={() => {}}
+            onOpenDispatchModal={() => {}}
+            onMarkDelivered={() => {}}
+          />
+        )}
         {activeTab === 'catalog' && <AdminCatalogTab />}
         {activeTab === 'inventory' && <AdminInventoryTab />}
         {activeTab === 'sellers' && <AdminSellersTab />}
         {activeTab === 'audit' && (
-          <div className="p-4 bg-white rounded-2xl border border-[#E9DEE3] space-y-3">
-            <h4 className="text-xs font-bold text-[#716A70] uppercase flex items-center gap-1.5"><History className="w-4 h-4 text-[#7A3F65]" /><span>Registro de eventos del sistema (Auditoría inmutable)</span></h4>
-            <div className="divide-y divide-[#E9DEE3] text-xs">
+          <div className="p-5 bg-white rounded-[20px] border border-[#E9DFE4] space-y-3 shadow-2xs">
+            <h4 className="text-xs font-bold text-[#665D65] uppercase flex items-center gap-1.5">
+              <History className="w-4 h-4 text-[#D52C69]" />
+              <span>Registro de eventos del sistema (Auditoría inmutable)</span>
+            </h4>
+            <div className="divide-y divide-[#E9DFE4] text-xs">
               {auditLogs.map((log) => (
                 <div key={log.id} className="py-2.5 flex justify-between items-start gap-4">
                   <div>
-                    <span className="font-bold text-[#272329]">{log.action}</span> · <span className="text-[#716A70]">{log.details}</span>
-                    <span className="block text-[11px] text-[#716A70] mt-0.5">Actor: {log.actorName} ({log.actorRole})</span>
+                    <span className="font-bold text-[#241B24]">{log.action}</span> ·{' '}
+                    <span className="text-[#665D65]">{log.details}</span>
+                    <span className="block text-[11px] text-[#665D65] mt-0.5">
+                      Actor: <strong>{log.actorName}</strong> ({log.actorRole})
+                    </span>
                   </div>
-                  <span className="font-data text-[#716A70] shrink-0">{formatDate(log.createdAt)}</span>
+                  <span className="font-data text-[#665D65] shrink-0">{formatDate(log.createdAt)}</span>
                 </div>
               ))}
             </div>
