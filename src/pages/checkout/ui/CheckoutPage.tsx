@@ -43,7 +43,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
 
   if (createdOrder) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-left bg-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-left">
         {/* Progressive indicator */}
         <div className="mb-10">
           <div className="flex items-center justify-between max-w-2xl mx-auto relative">
@@ -79,7 +79,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-md mx-auto px-4 py-20 text-center space-y-4 bg-white">
+      <div className="max-w-md mx-auto px-4 py-20 text-center space-y-4">
         <div className="w-16 h-16 rounded-full bg-[#FFF7F9] border border-[#E9DFE4] flex items-center justify-center text-[#EE839F] mx-auto">
           <ShoppingBag className="w-8 h-8" />
         </div>
@@ -93,7 +93,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left">
       {/* Progressive Step Indicator */}
       <div className="mb-10 max-w-3xl mx-auto">
         <div className="flex items-center justify-between relative">

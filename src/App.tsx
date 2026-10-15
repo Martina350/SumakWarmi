@@ -61,7 +61,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#241B24]">
+    <div className="min-h-screen flex flex-col bg-[#FFF7F9] text-[#241B24]">
       <DemoRoleSwitcher />
       <Header currentPath={currentPath} onNavigate={navigate} />
       <main className="flex-1">{renderContent()}</main>

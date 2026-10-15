@@ -18,7 +18,7 @@ export const SellerPanelPage: React.FC = () => {
 
   if (!currentUser || (currentUser.role !== 'SELLER' && currentUser.role !== 'ADMIN')) {
     return (
-      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4 bg-white">
+      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4">
         <ShieldAlert className="w-12 h-12 text-[#B42336] mx-auto" />
         <h2 className="text-xl font-bold font-heading text-[#241B24]">Acceso restringido</h2>
         <p className="text-xs text-[#665D65]">Vista exclusiva para personal comercial autorizado.</p>
@@ -39,7 +39,7 @@ export const SellerPanelPage: React.FC = () => {
   else if (activeTab === 'dispatched') filteredOrders = orders.filter((o) => o.shipmentStatus === 'DISPATCHED' || o.shipmentStatus === 'DELIVERED');
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8 bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8">
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Operación Comercial</span>
         <h1 className="text-3xl font-heading font-bold text-[#241B24] mt-0.5">Panel de Vendedor · {currentUser.name}</h1>

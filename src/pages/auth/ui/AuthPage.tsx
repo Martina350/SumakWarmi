@@ -30,7 +30,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-12 text-left space-y-6 bg-white">
+    <div className="max-w-md mx-auto px-4 py-12 text-left space-y-6">
       <div className="text-center">
         <h1 className="text-2xl font-heading font-bold text-[#241B24]">
           {mode === 'login' ? 'Acceso a SUMAKWARMI' : 'Crear tu cuenta'}

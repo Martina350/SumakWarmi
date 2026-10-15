@@ -19,7 +19,7 @@ export const AdminDashboardPage: React.FC = () => {
 
   if (!currentUser || currentUser.role !== 'ADMIN') {
     return (
-      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4 bg-white">
+      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4">
         <ShieldAlert className="w-12 h-12 text-[#B42336] mx-auto" />
         <h2 className="text-xl font-bold font-heading text-[#241B24]">Panel exclusivo para Administrador</h2>
         <p className="text-xs text-[#665D65]">Utiliza el selector superior para cambiar al rol de Mercedes Cañizares (ADMIN).</p>
@@ -33,7 +33,7 @@ export const AdminDashboardPage: React.FC = () => {
   const lowStockCount = products.reduce((count, p) => count + p.variants.filter((v) => v.stockActual <= v.stockMinimo).length, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8 bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8">
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Dirección & Control Global</span>
         <h1 className="text-3xl font-heading font-bold text-[#241B24] mt-0.5">Panel de Administración · SUMAKWARMI</h1>

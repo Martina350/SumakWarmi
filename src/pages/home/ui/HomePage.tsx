@@ -19,7 +19,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenAdvice }) 
   const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 6);
 
   return (
-    <div className="space-y-0 text-left bg-white">
+    <div className="space-y-0 text-left bg-[#FFF7F9]">
       <HeroSection
         onExplore={() => onNavigate('/tienda')}
         onOpenAdvice={onOpenAdvice}

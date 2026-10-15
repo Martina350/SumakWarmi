@@ -20,7 +20,7 @@ export const AccountPage: React.FC<AccountPageProps> = ({ onNavigate }) => {
 
   if (!currentUser) {
     return (
-      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4 bg-white">
+      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4">
         <div className="w-16 h-16 rounded-full bg-[#FFF7F9] border border-[#E9DFE4] flex items-center justify-center text-[#EE839F] mx-auto">
           <User className="w-8 h-8" />
         </div>
@@ -36,7 +36,7 @@ export const AccountPage: React.FC<AccountPageProps> = ({ onNavigate }) => {
   const myOrders = orders.filter((o) => o.customerId === currentUser.id);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8 bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E9DFE4]">
         <div>
           <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Mi cuenta</span>

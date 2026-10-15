@@ -9,7 +9,7 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onOpenAdvice }) => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#FFFFFF] via-[#FFF7F9] to-[#FFFFFF] py-14 sm:py-20 border-b border-[#E9DFE4]">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#FFF7F9] via-white/60 to-[#FFF7F9] py-14 sm:py-20 border-b border-[#E9DFE4]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6 text-left">

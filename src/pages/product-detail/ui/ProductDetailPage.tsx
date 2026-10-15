@@ -19,7 +19,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
     .slice(0, 3);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 text-left space-y-12 bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 text-left space-y-12">
       <button
         onClick={() => onNavigate('/tienda')}
         className="inline-flex items-center gap-2 text-xs font-semibold text-[#665D65] hover:text-[#A91E50] transition-colors cursor-pointer"
