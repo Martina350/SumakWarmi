@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Address } from '../../../shared/types/index.ts';
 import { Button } from '../../../shared/ui/Button.tsx';
 import { Input } from '../../../shared/ui/Input.tsx';
-import { MapPin, Plus, Check } from 'lucide-react';
+import { MapPin, Plus, Check, ArrowRight } from 'lucide-react';
 
 interface CheckoutAddressStepProps {
   addresses: Address[];
   selectedAddressId: string;
   onSelectAddress: (addr: Address) => void;
   onAddNewAddress: (addr: Omit<Address, 'id'>) => void;
+  onContinueToPayment?: () => void;
 }
 
 export const CheckoutAddressStep: React.FC<CheckoutAddressStepProps> = ({
@@ -16,6 +17,7 @@ export const CheckoutAddressStep: React.FC<CheckoutAddressStepProps> = ({
   selectedAddressId,
   onSelectAddress,
   onAddNewAddress,
+  onContinueToPayment,
 }) => {
   const [showNewForm, setShowNewForm] = useState(addresses.length === 0);
   const [formData, setFormData] = useState({
@@ -36,6 +38,9 @@ export const CheckoutAddressStep: React.FC<CheckoutAddressStepProps> = ({
       isDefault: addresses.length === 0,
     });
     setShowNewForm(false);
+    if (onContinueToPayment) {
+      onContinueToPayment();
+    }
   };
 
   return (
@@ -72,15 +77,30 @@ export const CheckoutAddressStep: React.FC<CheckoutAddressStepProps> = ({
       </div>
 
       {!showNewForm && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          icon={<Plus className="w-3.5 h-3.5" />}
-          onClick={() => setShowNewForm(true)}
-        >
-          Agregar otra dirección en Ecuador
-        </Button>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            icon={<Plus className="w-3.5 h-3.5" />}
+            onClick={() => setShowNewForm(true)}
+          >
+            Agregar otra dirección en Ecuador
+          </Button>
+
+          {selectedAddressId && onContinueToPayment && (
+            <Button
+              type="button"
+              variant="primary"
+              size="md"
+              icon={<ArrowRight className="w-4 h-4" />}
+              onClick={onContinueToPayment}
+              className="font-semibold"
+            >
+              Continuar a Método de Pago
+            </Button>
+          )}
+        </div>
       )}
 
       {showNewForm && (

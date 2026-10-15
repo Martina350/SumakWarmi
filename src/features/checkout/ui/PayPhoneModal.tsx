@@ -10,6 +10,7 @@ interface PayPhoneModalProps {
   orderNumber: string;
   amount: number;
   onSimulateResult: (success: boolean) => void;
+  cardSummary?: { brand: string; last4: string; holder: string };
 }
 
 export const PayPhoneModal: React.FC<PayPhoneModalProps> = ({
@@ -18,6 +19,7 @@ export const PayPhoneModal: React.FC<PayPhoneModalProps> = ({
   orderNumber,
   amount,
   onSimulateResult,
+  cardSummary,
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [simulationState, setSimulationState] = useState<'IDLE' | 'PROCESSING' | 'REJECTED_PREVIEW'>('IDLE');
@@ -64,6 +66,18 @@ export const PayPhoneModal: React.FC<PayPhoneModalProps> = ({
             </p>
           </div>
         </div>
+
+        {cardSummary && (
+          <div className="p-3 bg-white rounded-xl border border-[#E9DFE4] flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2">
+              <CreditCard className="w-4 h-4 text-[#D52C69]" />
+              <span className="font-bold text-[#241B24]">
+                {cardSummary.brand || 'Tarjeta'} ···· {cardSummary.last4 || '4242'}
+              </span>
+            </div>
+            <span className="text-[#665D65] font-medium">{cardSummary.holder}</span>
+          </div>
+        )}
 
         <div className="p-3.5 bg-[#FFF1D9] border border-[#9A6200]/30 rounded-xl text-xs text-[#9A6200] flex items-start gap-2.5">
           <AlertTriangle className="w-4 h-4 text-[#9A6200] shrink-0 mt-0.5" />
