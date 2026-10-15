@@ -1,0 +1,6 @@
+{
+  "name": "SUMAKWARMI · Bienestar Menstrual & Autocuidado",
+  "description": "E-commerce y sistema integral de gestión comercial para Romina Sumak Warmi: catálogo público, checkout con Servientrega y PayPhone simulados, panel vendedor y administración.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
