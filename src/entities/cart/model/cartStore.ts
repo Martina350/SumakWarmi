@@ -1,4 +1,5 @@
 import { createStore } from '../../../shared/lib/createStore.ts';
+import { businessStore } from '../../../shared/domain/businessStore.ts';
 
 export interface CartItem {
   productId: string;
@@ -25,6 +26,14 @@ const cartStore = createStore<CartState>(
 export const useCartStore = cartStore.useStore;
 
 export const cartActions = {
+  refreshCatalog: () => {
+    const products = businessStore.getState().products;
+    cartStore.setState((prev) => ({ ...prev, items: prev.items.map((it) => {
+      const p = products.find((p) => p.id === it.productId); const v = p?.variants.find((v) => v.id === it.variantId);
+      if (!p || !v || v.price === null || !['ACTIVE', 'OUT_OF_STOCK'].includes(p.status)) throw new Error('Retira del carrito los productos que ya no están disponibles.');
+      return { ...it, price: v.price, productName: p.name, variantName: v.name, imageUrl: p.featuredImage };
+    }) }));
+  },
   addItem: (item: CartItem) => {
     cartStore.setState((prev) => {
       const existing = prev.items.find((i) => i.variantId === item.variantId);

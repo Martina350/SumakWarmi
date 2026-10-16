@@ -28,6 +28,10 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
     shippingCost,
     placeOrder,
     handlePayPhoneResult,
+    handlePayPhoneCancelled,
+    error,
+    pricesChanged,
+    refreshPrices,
   } = useCheckoutFlow();
 
   // Progressive step calculation
@@ -66,12 +70,14 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
           onNavigateOrders={() => onNavigate('/mi-cuenta')}
           onOpenPayPhoneModal={() => setIsPayPhoneModalOpen(true)}
         />
+        {error && <p role="alert" className="text-sm text-[#B42336]">{error}</p>}
         <PayPhoneModal
           isOpen={isPayPhoneModalOpen}
           onClose={() => setIsPayPhoneModalOpen(false)}
           orderNumber={createdOrder.orderNumber}
           amount={createdOrder.total}
           onSimulateResult={handlePayPhoneResult}
+          onSimulateCancelled={handlePayPhoneCancelled}
         />
       </div>
     );
@@ -135,6 +141,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
       <h1 className="text-2xl sm:text-3xl font-heading font-bold text-[#241B24] mb-8">
         Finalizar tu pedido
       </h1>
+      <p className="text-xs text-[#665D65] mb-4">Entorno de demostración · Sin cobros ni envíos reales.</p>
+      {error && <p role="alert" className="p-4 mb-4 rounded-xl bg-[#FDEBED] text-[#B42336] text-sm">{error}</p>}
+      {pricesChanged && <div role="status" className="p-4 mb-4 rounded-xl bg-[#FFF1D9] text-[#9A6200] text-sm">Los precios del catálogo cambiaron. Actualiza el carrito y revisa el nuevo total antes de confirmar. <button className="underline font-bold" onClick={refreshPrices}>Actualizar precios del carrito</button></div>}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-7 space-y-6">
@@ -181,7 +190,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
                 variant="primary"
                 size="lg"
                 className="w-full text-base font-semibold"
-                disabled={!selectedAddress}
+                disabled={!selectedAddress || pricesChanged}
                 onClick={placeOrder}
                 icon={<ArrowRight className="w-4 h-4" />}
               >

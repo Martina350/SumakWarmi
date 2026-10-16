@@ -27,6 +27,17 @@ export interface OrderStatusHistory {
 }
 
 export interface Order {
+  version?: number;
+  salesAttributionSellerId?: string;
+  preparedItems?: Record<string, number>;
+  packed?: boolean;
+  incident?: string;
+  bankInstructionsSnapshot?: string;
+  subtotalCents?: number;
+  shippingCents?: number;
+  totalCents?: number;
+  refundedCents?: number;
+  paymentApprovedAt?: string;
   id: string;
   orderNumber: string; // e.g. SW-000101
   customerId: string;

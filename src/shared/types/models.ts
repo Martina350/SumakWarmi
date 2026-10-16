@@ -1,6 +1,6 @@
 export type UserRole = 'ADMIN' | 'SELLER' | 'CUSTOMER';
 
-export type ProductStatus = 'DRAFT' | 'ACTIVE' | 'OUT_OF_STOCK' | 'INACTIVE';
+export type ProductStatus = 'DRAFT' | 'ACTIVE' | 'OUT_OF_STOCK' | 'INACTIVE' | 'ARCHIVED';
 
 export type OrderStatus =
   | 'CREATED'
@@ -10,7 +10,7 @@ export type OrderStatus =
   | 'READY_FOR_SHIPMENT'
   | 'COMPLETED'
   | 'CANCELLED'
-  | 'EXPIRED';
+  | 'EXPIRED' | 'DISPATCHED' | 'ON_HOLD' | 'RETURN_REQUESTED' | 'RETURNED' | 'CLOSED_WITH_INCIDENT';
 
 export type PaymentStatus =
   | 'PENDING'
@@ -21,7 +21,7 @@ export type PaymentStatus =
   | 'FAILED'
   | 'REFUND_PENDING'
   | 'REFUNDED'
-  | 'PARTIALLY_REFUNDED';
+  | 'PARTIALLY_REFUNDED' | 'UNDER_REVIEW' | 'PROCESSING' | 'CANCELLED';
 
 export type ShipmentStatus =
   | 'NOT_CREATED'
@@ -31,12 +31,12 @@ export type ShipmentStatus =
   | 'IN_TRANSIT'
   | 'DELIVERY_FAILED'
   | 'DELIVERED'
-  | 'RETURNED';
+  | 'RETURNED' | 'LABEL_REGISTERED' | 'HANDED_TO_CARRIER' | 'INCIDENT' | 'RETURNING';
 
 export type StockReservationStatus =
   | 'ACTIVE'
   | 'CONSUMED'
   | 'RELEASED'
-  | 'EXPIRED';
+  | 'EXPIRED' | 'HELD' | 'COMMITTED';
 
 export type PaymentMethod = 'TRANSFER' | 'PAYPHONE';

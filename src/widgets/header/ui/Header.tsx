@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSessionStore } from '../../../entities/session/index.ts';
 import { useCartStore, cartActions } from '../../../entities/cart/index.ts';
-import { ShoppingBag, User, LayoutDashboard } from 'lucide-react';
+import { ShoppingBag, User } from 'lucide-react';
 
 interface HeaderProps {
   currentPath: string;
@@ -9,14 +9,25 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
-  const { currentUser } = useSessionStore();
+  const { currentUser: sessionUser } = useSessionStore();
+  const currentUser = sessionUser?.role === 'CUSTOMER' ? sessionUser : null;
+  const logoClicks = useRef(0);
+  const handleLogoClick = () => {
+    logoClicks.current += 1;
+    if (logoClicks.current === 10) {
+      logoClicks.current = 0;
+      onNavigate('/equipo/login');
+    } else {
+      onNavigate('/');
+    }
+  };
   const { items } = useCartStore();
   const totalCartCount = items.reduce((acc, it) => acc + it.quantity, 0);
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-[#E9DFE4] sticky top-[33px] z-40 transition-colors">
+    <header className="bg-white/95 backdrop-blur-md border-b border-[#E9DFE4] sticky top-0 z-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-8">
-        <button onClick={() => onNavigate('/')} className="flex items-center gap-2.5 text-left group cursor-pointer whitespace-nowrap shrink-0">
+        <button aria-label="SUMAKWARMI, inicio" onClick={handleLogoClick} className="flex items-center gap-2.5 text-left group cursor-pointer whitespace-nowrap shrink-0">
           <div className="w-8 h-8 rounded-xl bg-[#D52C69] text-white flex items-center justify-center font-heading text-lg font-bold shadow-xs transition-transform group-hover:scale-105">
             S
           </div>
@@ -66,24 +77,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
         </nav>
 
         <div className="flex items-center gap-3 shrink-0">
-          {currentUser?.role === 'ADMIN' && (
-            <button
-              onClick={() => onNavigate('/admin')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-[#FBE7ED] text-[#A91E50] hover:bg-[#F6D5DF] rounded-lg text-xs font-semibold transition-colors cursor-pointer"
-            >
-              <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Panel Admin</span>
-            </button>
-          )}
-          {currentUser?.role === 'SELLER' && (
-            <button
-              onClick={() => onNavigate('/panel')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-[#E8F3EE] text-[#267A59] hover:bg-[#D7ECE2] rounded-lg text-xs font-semibold transition-colors cursor-pointer"
-            >
-              <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Panel Vendedor</span>
-            </button>
-          )}
           <button
             onClick={() => onNavigate(currentUser ? '/mi-cuenta' : '/iniciar-sesion')}
             className="flex items-center gap-1.5 p-2 text-[#665D65] hover:text-[#A91E50] hover:bg-[#FBE7ED] rounded-xl transition-colors cursor-pointer"

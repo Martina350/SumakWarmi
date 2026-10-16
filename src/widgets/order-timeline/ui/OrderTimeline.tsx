@@ -8,19 +8,19 @@ interface OrderTimelineProps {
 }
 
 export const OrderTimeline: React.FC<OrderTimelineProps> = ({ order }) => {
-  const isPaymentApproved = order.paymentStatus === 'APPROVED';
+  const isPaymentApproved = !!order.paymentApprovedAt;
   const isPaymentRequiresCorrection = order.paymentStatus === 'REQUIRES_CORRECTION';
   const isPaymentRejected = order.paymentStatus === 'REJECTED';
-  const isPaymentPending = order.paymentStatus === 'PENDING_VERIFICATION';
+  const isPaymentPending = ['PENDING_VERIFICATION', 'UNDER_REVIEW'].includes(order.paymentStatus);
 
   const isPrepDone =
-    order.shipmentStatus === 'PREPARING' ||
+    ['LABEL_REGISTERED', 'HANDED_TO_CARRIER', 'DELIVERY_FAILED'].includes(order.shipmentStatus) || order.shipmentStatus === 'PREPARING' ||
     order.shipmentStatus === 'DISPATCHED' ||
     order.shipmentStatus === 'IN_TRANSIT' ||
     order.shipmentStatus === 'DELIVERED';
 
   const isShippedDone =
-    order.shipmentStatus === 'DISPATCHED' ||
+    ['HANDED_TO_CARRIER', 'DELIVERY_FAILED'].includes(order.shipmentStatus) || order.shipmentStatus === 'DISPATCHED' ||
     order.shipmentStatus === 'IN_TRANSIT' ||
     order.shipmentStatus === 'DELIVERED';
 
@@ -150,7 +150,7 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({ order }) => {
         <h5 className="text-xs font-bold text-[#665D65] uppercase pb-2.5">
           Historial de eventos y trazabilidad auditada
         </h5>
-        {order.history.map((h) => (
+        {order.history.filter((h) => h.isPublic).map((h) => (
           <div key={h.id} className="py-2.5 text-xs flex items-start justify-between gap-3">
             <div>
               <p className="font-semibold text-[#241B24]">{h.comment}</p>

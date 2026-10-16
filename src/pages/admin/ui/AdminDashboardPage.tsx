@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSessionStore } from '../../../entities/session/index.ts';
+import { useStaffSessionStore } from '../../../entities/session/model/staffSessionStore.ts';
 import { useOrderStore } from '../../../entities/order/index.ts';
 import { useCatalogStore } from '../../../entities/catalog/index.ts';
 import { AdminKpiGrid } from './AdminKpiGrid.tsx';
@@ -7,12 +7,12 @@ import { AdminCatalogTab } from './AdminCatalogTab.tsx';
 import { AdminInventoryTab } from './AdminInventoryTab.tsx';
 import { AdminSellersTab } from './AdminSellersTab.tsx';
 import { SellerOrdersTable } from '../../seller/ui/SellerOrdersTable.tsx';
-import { Tabs } from '../../../shared/ui/Tabs.tsx';
+import { StaffLayout } from '../../../widgets/staff-layout/ui/StaffLayout.tsx';
 import { formatDate } from '../../../shared/lib/formatters.ts';
 import { ShieldAlert, History } from 'lucide-react';
 
 export const AdminDashboardPage: React.FC = () => {
-  const { currentUser } = useSessionStore();
+  const { currentUser } = useStaffSessionStore();
   const { orders, auditLogs } = useOrderStore();
   const { products } = useCatalogStore();
   const [activeTab, setActiveTab] = useState('orders');
@@ -22,7 +22,7 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4 bg-white">
         <ShieldAlert className="w-12 h-12 text-[#B42336] mx-auto" />
         <h2 className="text-xl font-bold font-heading text-[#241B24]">Panel exclusivo para Administrador</h2>
-        <p className="text-xs text-[#665D65]">Utiliza el selector superior para cambiar al rol de Mercedes Cañizares (ADMIN).</p>
+        <p className="text-xs text-[#665D65]">Inicia sesión con una cuenta administrativa activa.</p>
       </div>
     );
   }
@@ -33,7 +33,17 @@ export const AdminDashboardPage: React.FC = () => {
   const lowStockCount = products.reduce((count, p) => count + p.variants.filter((v) => v.stockActual <= v.stockMinimo).length, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left space-y-8 bg-white">
+    <StaffLayout
+          tabs={[
+            { id: 'orders', label: 'Todos los pedidos', count: orders.length },
+            { id: 'catalog', label: 'Catálogo & Precios', count: products.length },
+            { id: 'inventory', label: 'Inventario' },
+            { id: 'sellers', label: 'Vendedores & Accesos' },
+            { id: 'audit', label: 'Auditoría inmutable' },
+          ]}
+          activeTab={activeTab}
+          onChange={setActiveTab}
+        >
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Dirección & Control Global</span>
         <h1 className="text-3xl font-heading font-bold text-[#241B24] mt-0.5">Panel de Administración · SUMAKWARMI</h1>
@@ -49,20 +59,11 @@ export const AdminDashboardPage: React.FC = () => {
       />
 
       <div className="space-y-4">
-        <Tabs
-          tabs={[
-            { id: 'orders', label: 'Todos los pedidos', count: orders.length },
-            { id: 'catalog', label: 'Catálogo & Precios', count: products.length },
-            { id: 'inventory', label: 'Inventario' },
-            { id: 'sellers', label: 'Vendedores & Accesos' },
-            { id: 'audit', label: 'Auditoría inmutable' },
-          ]}
-          activeTab={activeTab}
-          onChange={setActiveTab}
-        />
+
 
         {activeTab === 'orders' && (
           <SellerOrdersTable
+            readOnly
             orders={orders}
             currentUserId={currentUser.id}
             onTakeOrder={() => {}}
@@ -97,6 +98,6 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </StaffLayout>
   );
 };

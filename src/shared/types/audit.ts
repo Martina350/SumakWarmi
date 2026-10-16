@@ -1,10 +1,13 @@
 export interface AuditLog {
+  operationId?: string;
+  previous?: unknown;
+  next?: unknown;
   id: string;
   actorId: string;
   actorName: string;
   actorRole: string;
   action: string;
-  entityType: 'ORDER' | 'PAYMENT' | 'SHIPMENT' | 'PRODUCT' | 'USER' | 'SETTINGS';
+  entityType: 'ORDER' | 'PAYMENT' | 'SHIPMENT' | 'PRODUCT' | 'USER' | 'SETTINGS' | 'CATEGORY' | 'INVENTORY';
   entityId: string;
   details: string;
   createdAt: string;

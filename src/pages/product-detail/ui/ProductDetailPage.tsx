@@ -10,9 +10,29 @@ interface ProductDetailPageProps {
   onOpenAdvice: () => void;
 }
 
-export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNavigate, onOpenAdvice }) => {
+export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
+  slug,
+  onNavigate,
+  onOpenAdvice,
+}) => {
   const { products } = useCatalogStore();
-  const product = products.find((p) => p.slug === slug) || products[0];
+  const [failedImage, setFailedImage] = React.useState('');
+  const product = products.find((p) => p.slug === slug);
+  if (!product)
+    return (
+      <div className="max-w-xl mx-auto p-8 my-12 text-center space-y-4">
+        <h1 className="text-2xl font-bold">Producto no disponible</h1>
+        <p className="text-sm text-[#665D65]">
+          Esta publicación ya no está disponible para nuevas compras.
+        </p>
+        <button
+          className="text-sm underline text-[#A91E50]"
+          onClick={() => onNavigate('/tienda')}
+        >
+          Volver a la tienda
+        </button>
+      </div>
+    );
 
   const relatedProducts = products
     .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
@@ -32,33 +52,79 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
         {/* Left: Product Showcase */}
         <div className="lg:col-span-7 space-y-6">
           <div className="aspect-4/3 rounded-[24px] bg-gradient-to-br from-[#FFF7F9] via-white to-[#FFF7F9] border border-[#E9DFE4] flex flex-col items-center justify-center p-8 text-center shadow-xs">
-            <div className="w-20 h-20 rounded-2xl bg-white shadow-2xs border border-[#E9DFE4] flex items-center justify-center text-[#D52C69] mb-4">
-              <Sparkles className="w-10 h-10 stroke-[1.5]" />
-            </div>
-            <h2 className="font-heading text-2xl font-bold text-[#241B24] max-w-sm">
-              {product.name}
-            </h2>
-            <span className="text-xs text-[#665D65] mt-1 font-medium">Línea oficial SUMAKWARMI</span>
+            {product.featuredImage && failedImage !== product.featuredImage ? (
+              <img
+                src={product.featuredImage}
+                onError={() => setFailedImage(product.featuredImage!)}
+                alt={product.imageAlt || product.name}
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <>
+                <div className="w-20 h-20 rounded-2xl bg-white shadow-2xs border border-[#E9DFE4] flex items-center justify-center text-[#D52C69] mb-4">
+                  <Sparkles className="w-10 h-10 stroke-[1.5]" />
+                </div>
+                <h2 className="font-heading text-2xl font-bold text-[#241B24] max-w-sm">
+                  {product.name}
+                </h2>
+                <span className="text-xs text-[#665D65] mt-1 font-medium">
+                  Imagen no disponible · SUMAKWARMI
+                </span>
+              </>
+            )}
           </div>
+          {!!product.galleryImages?.length && (
+            <div className="flex gap-3 flex-wrap">
+              {product.galleryImages.map((url, i) => (
+                <a
+                  key={`${url}-${i}`}
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src={url}
+                    alt={`${product.name}, imagen ${i + 1}`}
+                    className="w-24 h-24 object-contain border border-[#E9DFE4] rounded-xl"
+                  />
+                </a>
+              ))}
+            </div>
+          )}
 
           <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-6 space-y-4 shadow-2xs">
             <h3 className="text-sm font-bold text-[#241B24] uppercase tracking-wide flex items-center gap-2">
               <Info className="w-4 h-4 text-[#D52C69]" />
               <span>Descripción y beneficios</span>
             </h3>
-            <p className="text-sm text-[#665D65] leading-relaxed">{product.description}</p>
+            <p className="text-sm text-[#665D65] leading-relaxed">
+              {product.description}
+            </p>
+            {product.precautions && (
+              <p className="text-xs text-[#665D65]">
+                <strong>Precauciones:</strong> {product.precautions}
+              </p>
+            )}
 
             {product.materials && (
               <div className="pt-3 border-t border-[#E9DFE4]">
-                <h4 className="text-xs font-bold text-[#665D65] uppercase">Materiales y composición</h4>
-                <p className="text-xs text-[#241B24] mt-1">{product.materials}</p>
+                <h4 className="text-xs font-bold text-[#665D65] uppercase">
+                  Materiales y composición
+                </h4>
+                <p className="text-xs text-[#241B24] mt-1">
+                  {product.materials}
+                </p>
               </div>
             )}
 
             {product.instructions && (
               <div className="pt-3 border-t border-[#E9DFE4]">
-                <h4 className="text-xs font-bold text-[#665D65] uppercase">Instrucciones y cuidados</h4>
-                <p className="text-xs text-[#241B24] mt-1 leading-relaxed">{product.instructions}</p>
+                <h4 className="text-xs font-bold text-[#665D65] uppercase">
+                  Instrucciones y cuidados
+                </h4>
+                <p className="text-xs text-[#241B24] mt-1 leading-relaxed">
+                  {product.instructions}
+                </p>
               </div>
             )}
           </div>
@@ -66,7 +132,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
 
         {/* Right: Sticky Purchase Module */}
         <div className="lg:col-span-5 lg:sticky lg:top-28">
-          <ProductPurchaseModule product={product} onOpenAdvice={onOpenAdvice} />
+          <ProductPurchaseModule
+            product={product}
+            onOpenAdvice={onOpenAdvice}
+          />
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { sessionActions } from '../../../entities/session/index.ts';
+import { sessionActions, useSessionStore } from '../../../entities/session/index.ts';
 import { Button } from '../../../shared/ui/Button.tsx';
 import { Input } from '../../../shared/ui/Input.tsx';
 import { UserCheck, Shield } from 'lucide-react';
@@ -12,12 +12,18 @@ export const CheckoutCustomerForm: React.FC<CheckoutCustomerFormProps> = ({ onId
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [error, setError] = useState('');
+  const { users } = useSessionStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !phone) return;
-    sessionActions.registerCustomer(name, email, phone);
-    onIdentified();
+    try {
+      const existing = users.find((u) => u.email.toLowerCase() === email.trim().toLowerCase());
+      if (existing) { if (existing.role !== 'CUSTOMER' || !existing.isActive) throw new Error('Utiliza una cuenta de cliente activa.'); sessionActions.setCurrentUser(existing); }
+      else sessionActions.registerCustomer(name, email, phone);
+      onIdentified();
+    } catch (e) { setError(e instanceof Error ? e.message : 'No se pudo continuar.'); }
   };
 
   return (
@@ -27,10 +33,11 @@ export const CheckoutCustomerForm: React.FC<CheckoutCustomerFormProps> = ({ onId
         <span>1. Identificación para tu pedido</span>
       </div>
       <p className="text-xs text-[#665D65] leading-relaxed">
-        Ingresa tus datos de contacto para asociar tu pedido y recibir las notificaciones oficiales de Servientrega en Ecuador.
+        Ingresa tus datos ficticios para registrar tu pedido. Si ya tienes cuenta, utiliza su correo. Las notificaciones de esta demostración son internas.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-3">
+        {error && <p role="alert" className="text-xs text-[#B42336]">{error}</p>}
         <Input
           label="Nombre y Apellido"
           required
