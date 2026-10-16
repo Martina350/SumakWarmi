@@ -24,6 +24,10 @@ export interface PaymentHistory {
 }
 
 export interface Payment {
+  reviewerId?: string;
+  resolvedAt?: string;
+  reason?: string;
+  amountCents?: number;
   id: string;
   orderId: string;
   amount: number;

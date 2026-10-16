@@ -8,6 +8,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from '../../../shared/ui/Table.tsx';
 import { CheckSquare, Truck, Eye, CheckCircle2 } from 'lucide-react';
 
 interface SellerOrdersTableProps {
+  readOnly?: boolean;
   orders: Order[];
   currentUserId: string;
   onTakeOrder: (orderId: string) => void;
@@ -17,6 +18,7 @@ interface SellerOrdersTableProps {
 }
 
 export const SellerOrdersTable: React.FC<SellerOrdersTableProps> = ({
+  readOnly = false,
   orders,
   currentUserId,
   onTakeOrder,
@@ -42,7 +44,7 @@ export const SellerOrdersTable: React.FC<SellerOrdersTableProps> = ({
           <Th>Pago</Th>
           <Th>Envío</Th>
           <Th>Responsable</Th>
-          <Th className="text-right">Acciones operativas</Th>
+          {!readOnly && <Th className="text-right">Acciones operativas</Th>}
         </Tr>
       </Thead>
       <Tbody>
@@ -74,7 +76,7 @@ export const SellerOrdersTable: React.FC<SellerOrdersTableProps> = ({
                   <span className="text-[#9A6200] font-medium">Sin asignar</span>
                 )}
               </Td>
-              <Td className="text-right">
+              {!readOnly && <Td className="text-right">
                 <div className="flex items-center justify-end gap-1.5 flex-wrap">
                   {!ord.assignedSellerId && (
                     <Button variant="outline" size="sm" onClick={() => onTakeOrder(ord.id)} icon={<CheckSquare className="w-3.5 h-3.5" />}>
@@ -97,7 +99,7 @@ export const SellerOrdersTable: React.FC<SellerOrdersTableProps> = ({
                     </Button>
                   )}
                 </div>
-              </Td>
+              </Td>}
             </Tr>
           );
         })}

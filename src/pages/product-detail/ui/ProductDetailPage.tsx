@@ -10,10 +10,38 @@ interface ProductDetailPageProps {
   onOpenAdvice: () => void;
 }
 
-export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNavigate, onOpenAdvice }) => {
+export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
+  slug,
+  onNavigate,
+  onOpenAdvice,
+}) => {
   const { products } = useCatalogStore();
-  const product = products.find((p) => p.slug === slug) || products[0];
+  const [failedImage, setFailedImage] = React.useState('');
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
+  const product = products.find((p) => p.slug === slug);
 
+  // Reset selected image on slug change
+  React.useEffect(() => {
+    setSelectedImage(null);
+  }, [slug]);
+
+  if (!product)
+    return (
+      <div className="max-w-xl mx-auto p-8 my-12 text-center space-y-4">
+        <h1 className="text-2xl font-bold">Producto no disponible</h1>
+        <p className="text-sm text-[#665D65]">
+          Esta publicación ya no está disponible para nuevas compras.
+        </p>
+        <button
+          className="text-sm underline text-[#A91E50]"
+          onClick={() => onNavigate('/tienda')}
+        >
+          Volver a la tienda
+        </button>
+      </div>
+    );
+
+  const activeImage = selectedImage || product.featuredImage;
   const relatedProducts = products
     .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
     .slice(0, 3);
@@ -31,34 +59,101 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         {/* Left: Product Showcase */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="aspect-4/3 rounded-[24px] bg-gradient-to-br from-[#FFF7F9] via-white to-[#FFF7F9] border border-[#E9DFE4] flex flex-col items-center justify-center p-8 text-center shadow-xs">
-            <div className="w-20 h-20 rounded-2xl bg-white shadow-2xs border border-[#E9DFE4] flex items-center justify-center text-[#D52C69] mb-4">
-              <Sparkles className="w-10 h-10 stroke-[1.5]" />
-            </div>
-            <h2 className="font-heading text-2xl font-bold text-[#241B24] max-w-sm">
-              {product.name}
-            </h2>
-            <span className="text-xs text-[#665D65] mt-1 font-medium">Línea oficial SUMAKWARMI</span>
+          <div className="aspect-4/3 rounded-[24px] bg-gradient-to-br from-[#FFF7F9] via-white to-[#FFF7F9] border border-[#E9DFE4] flex flex-col items-center justify-center p-8 text-center shadow-xs overflow-hidden">
+            {activeImage && failedImage !== activeImage ? (
+              <img
+                src={activeImage}
+                onError={() => setFailedImage(activeImage!)}
+                alt={product.imageAlt || product.name}
+                className="w-full h-full object-contain max-h-[380px] transition-transform duration-300"
+              />
+            ) : (
+              <>
+                <div className="w-20 h-20 rounded-2xl bg-white shadow-2xs border border-[#E9DFE4] flex items-center justify-center text-[#D52C69] mb-4">
+                  <Sparkles className="w-10 h-10 stroke-[1.5]" />
+                </div>
+                <h2 className="font-heading text-2xl font-bold text-[#241B24] max-w-sm">
+                  {product.name}
+                </h2>
+                <span className="text-xs text-[#665D65] mt-1 font-medium">
+                  Imagen no disponible · SUMAKWARMI
+                </span>
+              </>
+            )}
           </div>
+          {!!product.galleryImages?.length && (
+            <div className="flex gap-3 flex-wrap">
+              {product.featuredImage && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedImage(product.featuredImage!)}
+                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all p-1.5 bg-white cursor-pointer ${
+                    (activeImage === product.featuredImage)
+                      ? 'border-[#D52C69] ring-2 ring-[#D52C69]/20'
+                      : 'border-[#E9DFE4] hover:border-[#EE839F]'
+                  }`}
+                >
+                  <img
+                    src={product.featuredImage}
+                    alt={product.name}
+                    className="w-full h-full object-contain"
+                  />
+                </button>
+              )}
+              {product.galleryImages.map((url, i) => (
+                <button
+                  type="button"
+                  key={`${url}-${i}`}
+                  onClick={() => setSelectedImage(url)}
+                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all p-1.5 bg-white cursor-pointer ${
+                    activeImage === url
+                      ? 'border-[#D52C69] ring-2 ring-[#D52C69]/20'
+                      : 'border-[#E9DFE4] hover:border-[#EE839F]'
+                  }`}
+                >
+                  <img
+                    src={url}
+                    alt={`${product.name}, imagen ${i + 1}`}
+                    className="w-full h-full object-contain"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-6 space-y-4 shadow-2xs">
             <h3 className="text-sm font-bold text-[#241B24] uppercase tracking-wide flex items-center gap-2">
               <Info className="w-4 h-4 text-[#D52C69]" />
               <span>Descripción y beneficios</span>
             </h3>
-            <p className="text-sm text-[#665D65] leading-relaxed">{product.description}</p>
+            <p className="text-sm text-[#665D65] leading-relaxed">
+              {product.description}
+            </p>
+            {product.precautions && (
+              <p className="text-xs text-[#665D65]">
+                <strong>Precauciones:</strong> {product.precautions}
+              </p>
+            )}
 
             {product.materials && (
               <div className="pt-3 border-t border-[#E9DFE4]">
-                <h4 className="text-xs font-bold text-[#665D65] uppercase">Materiales y composición</h4>
-                <p className="text-xs text-[#241B24] mt-1">{product.materials}</p>
+                <h4 className="text-xs font-bold text-[#665D65] uppercase">
+                  Materiales y composición
+                </h4>
+                <p className="text-xs text-[#241B24] mt-1">
+                  {product.materials}
+                </p>
               </div>
             )}
 
             {product.instructions && (
               <div className="pt-3 border-t border-[#E9DFE4]">
-                <h4 className="text-xs font-bold text-[#665D65] uppercase">Instrucciones y cuidados</h4>
-                <p className="text-xs text-[#241B24] mt-1 leading-relaxed">{product.instructions}</p>
+                <h4 className="text-xs font-bold text-[#665D65] uppercase">
+                  Instrucciones y cuidados
+                </h4>
+                <p className="text-xs text-[#241B24] mt-1 leading-relaxed">
+                  {product.instructions}
+                </p>
               </div>
             )}
           </div>
@@ -66,7 +161,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug, onNa
 
         {/* Right: Sticky Purchase Module */}
         <div className="lg:col-span-5 lg:sticky lg:top-28">
-          <ProductPurchaseModule product={product} onOpenAdvice={onOpenAdvice} />
+          <ProductPurchaseModule
+            product={product}
+            onOpenAdvice={onOpenAdvice}
+          />
         </div>
       </div>
 

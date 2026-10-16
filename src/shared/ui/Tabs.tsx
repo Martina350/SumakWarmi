@@ -1,6 +1,7 @@
 import React from 'react';
 
 export interface TabItem {
+  group?: string;
   id: string;
   label: string;
   count?: number;

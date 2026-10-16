@@ -1,4 +1,6 @@
 import { Product } from '../types/index.ts';
+import compresaAguaImg from '../../assets/compresa-de-agua-electrico.jpg';
+import foamIntimoImg from '../../assets/foam-higiene-intima.jpg';
 
 export const BODY_AND_FOOD_PRODUCTS: Product[] = [
   {
@@ -13,6 +15,7 @@ export const BODY_AND_FOOD_PRODUCTS: Product[] = [
     status: 'ACTIVE',
     isFeatured: true,
     priceSource: 'site',
+    featuredImage: compresaAguaImg,
     variants: [
       { id: 'var-com-elec', sku: 'SW-COM-EL', name: 'Estándar 110V', price: 25.0, stockActual: 14, stockReservado: 1, stockMinimo: 3 },
     ],
@@ -59,6 +62,7 @@ export const BODY_AND_FOOD_PRODUCTS: Product[] = [
     status: 'ACTIVE',
     isFeatured: true,
     priceSource: 'site',
+    featuredImage: foamIntimoImg,
     variants: [
       { id: 'var-foam-150', sku: 'SW-FOA-150', name: 'Envase dosificador 150ml', price: 10.0, stockActual: 25, stockReservado: 0, stockMinimo: 5 },
     ],
@@ -74,6 +78,7 @@ export const BODY_AND_FOOD_PRODUCTS: Product[] = [
     materials: 'Fórmula hidratante con ácido láctico vegetal y manzanilla.',
     status: 'ACTIVE',
     priceSource: 'site',
+    featuredImage: foamIntimoImg,
     variants: [
       { id: 'var-foam-50', sku: 'SW-FOA-50', name: 'Formato Travel 50ml', price: 4.0, stockActual: 35, stockReservado: 0, stockMinimo: 6 },
     ],

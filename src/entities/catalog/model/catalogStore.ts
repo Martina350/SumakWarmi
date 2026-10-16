@@ -1,67 +1,19 @@
-import { createStore } from '../../../shared/lib/createStore.ts';
-import { Product, Category } from '../../../shared/types/index.ts';
-import { ALL_INITIAL_PRODUCTS, INITIAL_CATEGORIES } from '../../../shared/data/index.ts';
+import { useBusinessStore, businessStore } from '../../../shared/domain/businessStore.ts';
+import { operations } from '../../../shared/domain/operations.ts';
+import { Product } from '../../../shared/types/index.ts';
 import { generateId } from '../../../shared/lib/id.ts';
 
-interface CatalogState {
-  categories: Category[];
-  products: Product[];
+export function useCatalogStore() {
+  const state = useBusinessStore();
+  // Public consumers receive publication-filtered products; internal modules use useBusinessStore.
+  return { products: state.products.filter((p) => ['ACTIVE', 'OUT_OF_STOCK'].includes(p.status)), categories: state.categories.filter((c) => c.isActive !== false && c.isVisible !== false).sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)) };
 }
-
-const catalogStore = createStore<CatalogState>(
-  {
-    categories: INITIAL_CATEGORIES,
-    products: ALL_INITIAL_PRODUCTS,
-  },
-  'sumakwarmi_catalog_v1'
-);
-
-export const useCatalogStore = catalogStore.useStore;
-
 export const catalogActions = {
   updateVariantPrice: (productId: string, variantId: string, price: number) => {
-    catalogStore.setState((prev) => ({
-      ...prev,
-      products: prev.products.map((p) => {
-        if (p.id !== productId) return p;
-        return {
-          ...p,
-          variants: p.variants.map((v) => (v.id === variantId ? { ...v, price } : v)),
-        };
-      }),
-    }));
+    const p = businessStore.getState().products.find((p) => p.id === productId); if (!p) return;
+    operations.saveProduct({ ...p, variants: p.variants.map((v) => v.id === variantId ? { ...v, price } : v) });
   },
-  adjustVariantStock: (productId: string, variantId: string, delta: number) => {
-    catalogStore.setState((prev) => ({
-      ...prev,
-      products: prev.products.map((p) => {
-        if (p.id !== productId) return p;
-        return {
-          ...p,
-          variants: p.variants.map((v) =>
-            v.id === variantId
-              ? { ...v, stockActual: Math.max(0, v.stockActual + delta) }
-              : v
-          ),
-        };
-      }),
-    }));
-  },
-  addProduct: (productData: Omit<Product, 'id'>) => {
-    const newProduct: Product = {
-      ...productData,
-      id: generateId('prod'),
-    };
-    catalogStore.setState((prev) => ({
-      ...prev,
-      products: [newProduct, ...prev.products],
-    }));
-    return newProduct;
-  },
-  resetCatalog: () => {
-    catalogStore.setState({
-      categories: INITIAL_CATEGORIES,
-      products: ALL_INITIAL_PRODUCTS,
-    });
-  },
+  adjustVariantStock: (_productId: string, variantId: string, delta: number) => operations.adjustStock(variantId, delta, 'Ajuste administrativo'),
+  addProduct: (data: Omit<Product, 'id'>) => operations.saveProduct({ ...data, id: generateId('product') }),
+  resetCatalog: () => operations.reset(),
 };

@@ -1,6 +1,13 @@
 import { ProductStatus } from './models.ts';
 
 export interface Category {
+  image?: string;
+  parentId?: string;
+  displayOrder?: number;
+  isActive?: boolean;
+  isVisible?: boolean;
+  updatedAt?: string;
+  createdAt?: string;
   id: string;
   name: string;
   slug: string;
@@ -8,6 +15,7 @@ export interface Category {
 }
 
 export interface ProductVariant {
+  active?: boolean;
   id: string;
   sku: string;
   name: string;
@@ -19,6 +27,17 @@ export interface ProductVariant {
 }
 
 export interface Product {
+  version?: number;
+  updatedAt?: string;
+  createdAt?: string;
+  compareAtPrice?: number;
+  tags?: string;
+  precautions?: string;
+  weight?: number;
+  dimensions?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  imageAlt?: string;
   id: string;
   name: string;
   slug: string;

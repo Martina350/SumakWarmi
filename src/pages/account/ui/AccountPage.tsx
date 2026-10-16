@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSessionStore } from '../../../entities/session/index.ts';
+import { useSessionStore, sessionActions } from '../../../entities/session/index.ts';
+import { operations } from '../../../shared/domain/operations.ts';
 import { useOrderStore } from '../../../entities/order/index.ts';
 import { OrderDetailModal } from './OrderDetailModal.tsx';
 import { Order } from '../../../shared/types/index.ts';
@@ -15,7 +16,8 @@ interface AccountPageProps {
 
 export const AccountPage: React.FC<AccountPageProps> = ({ onNavigate }) => {
   const { currentUser } = useSessionStore();
-  const { orders, payments } = useOrderStore();
+  const { orders, payments, notifications } = useOrderStore();
+  const [actionError, setActionError] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   if (!currentUser) {
@@ -48,6 +50,11 @@ export const AccountPage: React.FC<AccountPageProps> = ({ onNavigate }) => {
         </Button>
       </div>
 
+      <div className="flex flex-wrap gap-3 items-center">
+        <Button variant="ghost" size="sm" onClick={() => { try { sessionActions.setCurrentUser(null); onNavigate('/'); } catch (e) { setActionError(String(e)); } }}>Cerrar sesión de cliente</Button>
+        {actionError && <p role="alert" className="text-xs text-[#B42336]">{actionError}</p>}
+      </div>
+      {notifications.some((n) => n.targetUserId === currentUser.id) && <details className="p-4 border border-[#E9DFE4] rounded-xl text-xs space-y-3"><summary className="cursor-pointer font-semibold">Notificaciones internas ({notifications.filter((n) => n.targetUserId === currentUser.id && !n.read).length} nuevas)</summary>{notifications.filter((n) => n.targetUserId === currentUser.id).slice(0, 10).map((n) => <p key={n.id}><strong>{n.title}</strong> · {n.message}</p>)}<button className="underline text-[#A91E50]" onClick={() => { try { operations.readNotifications(); } catch (e) { setActionError(String(e)); } }}>Marcar como leídas</button></details>}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-[#241B24] font-heading flex items-center gap-2">

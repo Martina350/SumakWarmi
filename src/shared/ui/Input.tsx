@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -18,7 +18,8 @@ export const Input: React.FC<InputProps> = ({
   id,
   ...props
 }) => {
-  const inputId = id || props.name;
+  const generatedId = useId();
+  const inputId = id || props.name || generatedId;
 
   return (
     <div className="w-full flex flex-col gap-1.5 text-left">

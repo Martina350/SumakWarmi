@@ -11,11 +11,13 @@ interface ProductPurchaseModuleProps {
 }
 
 export const ProductPurchaseModule: React.FC<ProductPurchaseModuleProps> = ({ product, onOpenAdvice }) => {
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(product.variants[0]);
+  const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id);
+  const selectedVariant = product.variants.find((v) => v.id === selectedVariantId) || product.variants[0];
+  const setSelectedVariant = (variant: ProductVariant) => setSelectedVariantId(variant.id);
   const [quantity, setQuantity] = useState(1);
 
   const price = selectedVariant?.price;
-  const isAvailable = selectedVariant && selectedVariant.stockActual > 0 && price !== null;
+  const isAvailable = selectedVariant && selectedVariant.active !== false && (selectedVariant.stockActual - selectedVariant.stockReservado) >= quantity && price !== null;
 
   const handleAddToCart = () => {
     if (!isAvailable || price === null) return;

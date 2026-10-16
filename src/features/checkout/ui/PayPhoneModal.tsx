@@ -4,23 +4,25 @@ import { Button } from '../../../shared/ui/Button.tsx';
 import { formatCurrency } from '../../../shared/lib/formatters.ts';
 import { CreditCard, CheckCircle2, XCircle, AlertTriangle, ShieldCheck, RefreshCw } from 'lucide-react';
 
-interface PayPhoneModalProps {
+export interface PayPhoneModalProps {
   isOpen: boolean;
   onClose: () => void;
   orderNumber: string;
   amount: number;
   onSimulateResult: (success: boolean) => void;
+  onSimulateCancelled?: () => void;
   cardSummary?: { brand: string; last4: string; holder: string };
 }
 
-export const PayPhoneModal: React.FC<PayPhoneModalProps> = ({
+export function PayPhoneModal({
   isOpen,
   onClose,
   orderNumber,
   amount,
   onSimulateResult,
+  onSimulateCancelled,
   cardSummary,
-}) => {
+}: PayPhoneModalProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [simulationState, setSimulationState] = useState<'IDLE' | 'PROCESSING' | 'REJECTED_PREVIEW'>('IDLE');
 
@@ -34,7 +36,7 @@ export const PayPhoneModal: React.FC<PayPhoneModalProps> = ({
       } else {
         setSimulationState('REJECTED_PREVIEW');
       }
-    }, 850);
+    }, 650);
   };
 
   const handleConfirmRejection = () => {
@@ -48,12 +50,14 @@ export const PayPhoneModal: React.FC<PayPhoneModalProps> = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        if (!isProcessing) onClose();
+      }}
       title="Pasarela PayPhone · Simulación de Pago"
       description="Entorno de prueba controlado sin conexión real con redes bancarias."
       maxWidth="md"
     >
-      <div className="space-y-5 py-2">
+      <div className="space-y-5 py-2 text-left">
         <div className="p-4 bg-[#FFF7F9] rounded-2xl border border-[#E9DFE4] flex justify-between items-center">
           <div>
             <span className="text-xs text-[#665D65]">Pedido a pagar</span>
@@ -138,14 +142,29 @@ export const PayPhoneModal: React.FC<PayPhoneModalProps> = ({
             >
               Simular Pago RECHAZADO (Fondos insuficientes)
             </Button>
+
+            {onSimulateCancelled && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full text-xs text-[#665D65]"
+                disabled={isProcessing}
+                onClick={onSimulateCancelled}
+              >
+                Registrar intento cancelado
+              </Button>
+            )}
           </div>
         )}
 
-        <div className="pt-2 border-t border-[#E9DFE4] flex items-center justify-center gap-1.5 text-[11px] text-[#665D65]">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#267A59]" />
-          <span>Simulador conforme a políticas de seguridad PCI-DSS DEMO</span>
+        <div className="pt-2 border-t border-[#E9DFE4] flex items-center justify-between text-[11px] text-[#665D65]">
+          <div className="flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#267A59]" />
+            <span>Simulador conforme a políticas de seguridad PCI-DSS DEMO</span>
+          </div>
+          <span>Permite reintento sin borrar historial</span>
         </div>
       </div>
     </Modal>
   );
-};
+}

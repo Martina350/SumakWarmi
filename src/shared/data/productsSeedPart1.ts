@@ -1,4 +1,7 @@
 import { Product } from '../types/index.ts';
+import copaMenstrualImg from '../../assets/copa-menstrual.jpg';
+import copasMenstrualesEcImg from '../../assets/copas-menstruales-ec.jpg';
+import discoMenstrualImg from '../../assets/disco-menstrual.jpg';
 
 export const MENSTRUAL_PRODUCTS: Product[] = [
   {
@@ -14,6 +17,8 @@ export const MENSTRUAL_PRODUCTS: Product[] = [
     status: 'ACTIVE',
     isFeatured: true,
     priceSource: 'site',
+    featuredImage: copaMenstrualImg,
+    galleryImages: [copasMenstrualesEcImg],
     variants: [
       { id: 'var-copa-s', sku: 'SW-COP-S', name: 'Talla S (Menores de 25 años / flujo regular)', price: 16.0, stockActual: 24, stockReservado: 2, stockMinimo: 5 },
       { id: 'var-copa-l', sku: 'SW-COP-L', name: 'Talla L (Mayores de 25 años / flujo abundante)', price: 16.0, stockActual: 18, stockReservado: 1, stockMinimo: 5 },
@@ -32,6 +37,7 @@ export const MENSTRUAL_PRODUCTS: Product[] = [
     status: 'ACTIVE',
     isFeatured: true,
     priceSource: 'site',
+    featuredImage: discoMenstrualImg,
     variants: [
       { id: 'var-disco-uni', sku: 'SW-DIS-UNI', name: 'Talla Estándar', price: 16.0, stockActual: 15, stockReservado: 0, stockMinimo: 4 },
     ],

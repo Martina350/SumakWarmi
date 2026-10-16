@@ -1,4 +1,5 @@
 import { Product } from '../types/index.ts';
+import chocolateImg from '../../assets/chocolate.jpg';
 
 export const SKIN_AND_FOOD_PRODUCTS: Product[] = [
   {
@@ -58,6 +59,7 @@ export const SKIN_AND_FOOD_PRODUCTS: Product[] = [
     status: 'ACTIVE',
     isFeatured: true,
     priceSource: 'site',
+    featuredImage: chocolateImg,
     variants: [
       { id: 'var-choc-fem', sku: 'SW-CHO-FEM', name: 'Barra 50g', price: 3.0, stockActual: 45, stockReservado: 2, stockMinimo: 8 },
     ],

@@ -25,4 +25,5 @@ export interface User {
   avatarUrl?: string;
   addresses?: Address[];
   createdAt: string;
+  permissions?: string[];
 }

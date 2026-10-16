@@ -1,4 +1,5 @@
 import React from 'react';
+import { useCatalogStore } from '../../../entities/catalog/index.ts';
 import { ArrowRight, Moon, Sparkles, Coffee } from 'lucide-react';
 
 interface CategoryTilesProps {
@@ -6,7 +7,7 @@ interface CategoryTilesProps {
 }
 
 export const CategoryTiles: React.FC<CategoryTilesProps> = ({ onSelectCategory }) => {
-  const categories = [
+  const presets = [
     {
       id: 'cat-menstrual',
       title: 'Cuidado Menstrual',
@@ -30,6 +31,8 @@ export const CategoryTiles: React.FC<CategoryTilesProps> = ({ onSelectCategory }
     },
   ];
 
+  const { categories: storedCategories } = useCatalogStore();
+  const categories = storedCategories.map((c) => ({ ...c, title: c.name, icon: presets.find((p) => p.id === c.id)?.icon || <Sparkles className="w-6 h-6 text-[#D52C69]" />, bg: 'bg-white' }));
   return (
     <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 text-left">
@@ -55,7 +58,7 @@ export const CategoryTiles: React.FC<CategoryTilesProps> = ({ onSelectCategory }
           >
             <div>
               <div className="w-12 h-12 rounded-xl bg-white border border-[#E9DFE4] flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 group-hover:border-[#EE839F]/50 transition-all">
-                {c.icon}
+                {c.image ? <img src={c.image} alt={c.name} className="w-full h-full rounded-xl object-cover" /> : c.icon}
               </div>
               <h3 className="text-lg font-bold text-[#241B24] group-hover:text-[#D52C69] transition-colors">
                 {c.title}

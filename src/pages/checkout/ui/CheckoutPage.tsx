@@ -8,7 +8,7 @@ import { CheckoutSummary } from './CheckoutSummary.tsx';
 import { CheckoutConfirmation } from './CheckoutConfirmation.tsx';
 import { PayPhoneModal } from '../../../features/checkout/ui/PayPhoneModal.tsx';
 import { Button } from '../../../shared/ui/Button.tsx';
-import { ShoppingBag, Check, User, MapPin, CreditCard, CheckCircle, Edit3 } from 'lucide-react';
+import { ShoppingBag, Check, User, MapPin, CreditCard, CheckCircle, Edit3, ArrowRight } from 'lucide-react';
 
 interface CheckoutPageProps {
   onNavigate: (path: string) => void;
@@ -28,6 +28,10 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
     shippingCost,
     placeOrder,
     handlePayPhoneResult,
+    handlePayPhoneCancelled,
+    error,
+    pricesChanged,
+    refreshPrices,
   } = useCheckoutFlow();
 
   // Controlled active step: 1 = Datos personales, 2 = Dirección de entrega, 3 = Método de pago, 4 = Confirmación
@@ -36,6 +40,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
     return 2;
   });
 
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [cardDetails, setCardDetails] = useState<{ brand: string; last4: string; holder: string } | undefined>(undefined);
 
   useEffect(() => {
@@ -83,12 +88,14 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
           onNavigateOrders={() => onNavigate('/mi-cuenta')}
           onOpenPayPhoneModal={() => setIsPayPhoneModalOpen(true)}
         />
+        {error && <p role="alert" className="text-sm text-[#B42336]">{error}</p>}
         <PayPhoneModal
           isOpen={isPayPhoneModalOpen}
           onClose={() => setIsPayPhoneModalOpen(false)}
           orderNumber={createdOrder.orderNumber}
           amount={createdOrder.total}
           onSimulateResult={handlePayPhoneResult}
+          onSimulateCancelled={handlePayPhoneCancelled}
           cardSummary={cardDetails}
         />
       </div>
@@ -173,13 +180,21 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
         </p>
       </div>
 
+      {error && <p role="alert" className="p-4 mb-4 rounded-xl bg-[#FDEBED] text-[#B42336] text-sm">{error}</p>}
+      {pricesChanged && (
+        <div role="status" className="p-4 mb-4 rounded-xl bg-[#FFF1D9] text-[#9A6200] text-sm flex items-center justify-between">
+          <span>Los precios del catálogo cambiaron. Actualiza el carrito y revisa el nuevo total antes de confirmar.</span>
+          <button className="underline font-bold cursor-pointer ml-2" onClick={refreshPrices}>Actualizar precios del carrito</button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-7 space-y-6">
           {/* PASO 1: DATOS PERSONALES */}
           {!currentUser ? (
             <CheckoutCustomerForm onIdentified={() => setActiveStep(2)} />
           ) : activeStep === 2 ? (
-            /* PASO 2: DIRECCIÓN DE ENTREGA (AISLADO, SIN MÉTODO DE PAGO ABAJO) */
+            /* PASO 2: DIRECCIÓN DE ENTREGA */
             <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-6 space-y-5 shadow-2xs">
               <div className="flex items-center justify-between border-b border-[#E9DFE4] pb-3.5">
                 <div>
@@ -193,100 +208,118 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
                 </div>
                 {selectedAddress && (
                   <span className="text-xs font-semibold text-[#267A59] flex items-center gap-1 bg-[#E8F3EE] px-2.5 py-1 rounded-full">
-                    <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Lista
+                    <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Confirmada
                   </span>
                 )}
               </div>
 
-              <CheckoutAddressStep
-                addresses={currentUser.addresses || []}
-                selectedAddressId={selectedAddress?.id || ''}
-                onSelectAddress={(addr) => setSelectedAddress(addr)}
-                onAddNewAddress={(newAddr) => {
-                  sessionActions.addAddressToCurrentUser(newAddr);
-                  setSelectedAddress({ ...newAddr, id: 'temp' });
-                }}
-                onContinueToPayment={() => {
-                  if (selectedAddress) {
-                    setActiveStep(3);
-                    window.scrollTo({ top: 150, behavior: 'smooth' });
-                  }
-                }}
-              />
-            </div>
-          ) : (
-            /* PASO 3: MÉTODO DE PAGO (DIRECCIÓN EN RESUMEN COMPACTO, SEPARADO Y BIEN ESTRUCTURADO) */
-            <div className="space-y-6">
-              {/* Tarjeta Resumen de Dirección Confirmada (Elegante y Compacta) */}
-              {selectedAddress && (
-                <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-4 sm:p-5 shadow-2xs">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#E8F3EE] text-[#267A59] flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="w-4 h-4 stroke-[2.5]" />
-                      </div>
-                      <div className="text-left">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-bold uppercase tracking-wider text-[#267A59]">
-                            Dirección de Entrega Confirmada
-                          </span>
-                          <span className="text-[10px] bg-[#FFF7F9] text-[#A91E50] font-semibold px-2 py-0.5 rounded-full border border-[#EE839F]/30">
-                            Servientrega
-                          </span>
+              {selectedAddress && !isEditingAddress ? (
+                <div className="space-y-4">
+                  <div className="p-4 sm:p-5 rounded-2xl border-2 border-[#267A59]/40 bg-[#E8F3EE]/30 text-left">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-[#267A59] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                          <Check className="w-4 h-4 stroke-[3]" />
                         </div>
-                        <p className="text-sm font-semibold text-[#241B24] mt-0.5">
-                          {selectedAddress.recipientName} · <span className="font-normal text-[#665D65]">{selectedAddress.phone}</span>
-                        </p>
-                        <p className="text-xs text-[#665D65] mt-0.5">
-                          {selectedAddress.mainStreet} {selectedAddress.reference ? `(${selectedAddress.reference})` : ''}, {selectedAddress.city}, {selectedAddress.province}
-                        </p>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold uppercase tracking-wider text-[#267A59]">
+                              Dirección de Entrega Confirmada
+                            </span>
+                            <span className="text-[10px] bg-[#FFF7F9] text-[#A91E50] font-semibold px-2 py-0.5 rounded-full border border-[#EE839F]/30">
+                              Servientrega
+                            </span>
+                          </div>
+                          <p className="text-sm font-semibold text-[#241B24] mt-1">
+                            {selectedAddress.recipientName} · <span className="font-normal text-[#665D65]">{selectedAddress.phone}</span>
+                          </p>
+                          <p className="text-xs text-[#665D65] mt-0.5">
+                            {selectedAddress.mainStreet} {selectedAddress.reference ? `(${selectedAddress.reference})` : ''}, {selectedAddress.city}, {selectedAddress.province}
+                          </p>
+                        </div>
                       </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        icon={<Edit3 className="w-3.5 h-3.5" />}
+                        onClick={() => setIsEditingAddress(true)}
+                        className="text-xs font-semibold shrink-0"
+                      >
+                        Cambiar dirección
+                      </Button>
                     </div>
+                  </div>
+
+                  <div className="pt-2 flex justify-end">
                     <Button
-                      variant="outline"
-                      size="sm"
-                      icon={<Edit3 className="w-3.5 h-3.5" />}
-                      onClick={() => setActiveStep(2)}
-                      className="text-xs font-semibold shrink-0"
+                      type="button"
+                      variant="primary"
+                      size="md"
+                      icon={<ArrowRight className="w-4 h-4" />}
+                      onClick={() => {
+                        setActiveStep(3);
+                        window.scrollTo({ top: 150, behavior: 'smooth' });
+                      }}
+                      className="font-semibold px-6"
                     >
-                      Cambiar dirección
+                      Continuar a Método de Pago
                     </Button>
                   </div>
                 </div>
-              )}
-
-              {/* Módulo Principal de Método de Pago */}
-              <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-6 space-y-5 shadow-2xs">
-                <div className="border-b border-[#E9DFE4] pb-3 flex items-center justify-between">
-                  <div>
-                    <h3 className="text-xs font-bold text-[#A91E50] uppercase flex items-center gap-1.5 tracking-wider">
-                      <CreditCard className="w-4 h-4 text-[#D52C69]" />
-                      <span>3. Método de Pago</span>
-                    </h3>
-                    <p className="text-xs text-[#665D65] mt-1">
-                      Selecciona y completa tu forma de pago preferida
-                    </p>
-                  </div>
-                  <span className="text-xs font-bold text-[#D52C69] bg-[#FBE7ED] px-2.5 py-1 rounded-full">
-                    Paso final
-                  </span>
-                </div>
-
-                <CheckoutPaymentStep
-                  method={paymentMethod}
-                  onSelectMethod={setPaymentMethod}
-                  orderTotal={total}
-                  onConfirmOrder={placeOrder}
-                  onCardDataChange={(card) => {
-                    const cleanNum = card.cardNumber.replace(/\s+/g, '');
-                    setCardDetails({
-                      brand: cleanNum.startsWith('4') ? 'Visa' : cleanNum.startsWith('5') ? 'Mastercard' : 'Tarjeta',
-                      last4: cleanNum.slice(-4) || '4242',
-                      holder: card.cardHolder || currentUser.name,
-                    });
+              ) : (
+                <CheckoutAddressStep
+                  addresses={currentUser.addresses || []}
+                  selectedAddressId={selectedAddress?.id || ''}
+                  onSelectAddress={(addr) => {
+                    setSelectedAddress(addr);
+                    setIsEditingAddress(false);
+                  }}
+                  onAddNewAddress={(newAddr) => {
+                    sessionActions.addAddressToCurrentUser(newAddr);
+                    setSelectedAddress({ ...newAddr, id: 'temp' });
+                    setIsEditingAddress(false);
+                  }}
+                  onContinueToPayment={() => {
+                    setIsEditingAddress(false);
+                    setActiveStep(3);
+                    window.scrollTo({ top: 150, behavior: 'smooth' });
                   }}
                 />
+              )}
+            </div>
+          ) : (
+            /* PASO 3: MÉTODO DE PAGO (SOLO MÉTODO DE PAGO, SIN DIRECCIÓN) */
+            <div className="bg-white rounded-[20px] border border-[#E9DFE4] p-6 space-y-5 shadow-2xs">
+              <div className="border-b border-[#E9DFE4] pb-3 flex items-center justify-between">
+                <div>
+                  <h3 className="text-xs font-bold text-[#A91E50] uppercase flex items-center gap-1.5 tracking-wider">
+                    <CreditCard className="w-4 h-4 text-[#D52C69]" />
+                    <span>3. Método de Pago</span>
+                  </h3>
+                  <p className="text-xs text-[#665D65] mt-1">
+                    Selecciona y completa tu forma de pago preferida
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-[#D52C69] bg-[#FBE7ED] px-2.5 py-1 rounded-full">
+                  Paso final
+                </span>
               </div>
+
+              <CheckoutPaymentStep
+                method={paymentMethod}
+                onSelectMethod={setPaymentMethod}
+                orderTotal={total}
+                onConfirmOrder={placeOrder}
+                onCardDataChange={(card) => {
+                  const cleanNum = card.cardNumber.replace(/\s+/g, '');
+                  setCardDetails({
+                    brand: cleanNum.startsWith('4') ? 'Visa' : cleanNum.startsWith('5') ? 'Mastercard' : 'Tarjeta',
+                    last4: cleanNum.slice(-4) || '4242',
+                    holder: card.cardHolder || currentUser.name,
+                  });
+                }}
+              />
             </div>
           )}
         </div>

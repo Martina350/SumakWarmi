@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+export const storageWarnings: string[] = [];
 
 export function createStore<T>(initialState: T, storageKey?: string) {
   let state = initialState;
@@ -10,7 +11,9 @@ export function createStore<T>(initialState: T, storageKey?: string) {
         state = JSON.parse(stored);
       }
     } catch {
-      // Fallback to initialState
+      storageWarnings.push(
+        `No se pudieron leer los datos de ${storageKey}. El contenido anterior sigue en el almacenamiento; descarga un respaldo antes de restablecer.`,
+      );
     }
   }
 
@@ -19,14 +22,20 @@ export function createStore<T>(initialState: T, storageKey?: string) {
   const getState = () => state;
 
   const setState = (updater: T | ((prev: T) => T)) => {
-    state = typeof updater === 'function' ? (updater as (prev: T) => T)(state) : updater;
+    const nextState =
+      typeof updater === 'function'
+        ? (updater as (prev: T) => T)(state)
+        : updater;
     if (storageKey && typeof window !== 'undefined') {
       try {
-        localStorage.setItem(storageKey, JSON.stringify(state));
+        localStorage.setItem(storageKey, JSON.stringify(nextState));
       } catch {
-        // LocalStorage quota or error
+        throw new Error(
+          'No se pudieron guardar los datos. Libera espacio de almacenamiento y vuelve a intentar.',
+        );
       }
     }
+    state = nextState;
     listeners.forEach((listener) => listener());
   };
 
@@ -43,7 +52,7 @@ export function createStore<T>(initialState: T, storageKey?: string) {
     return useSyncExternalStore(
       subscribe,
       () => (selector ? selector(state) : state),
-      () => (selector ? selector(initialState) : initialState)
+      () => (selector ? selector(initialState) : initialState),
     );
   }
 
