@@ -44,7 +44,7 @@ export const StorePage: React.FC<StorePageProps> = ({ initialCategory = 'all', o
   }, [products, selectedCategory, searchQuery, sortBy]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-left">
       <div className="mb-8">
         <h1 className="text-3xl sm:text-4xl font-heading font-bold text-[#241B24]">
           Catálogo de Bienestar & Cuidado

@@ -28,7 +28,7 @@ export const HelpPage: React.FC<HelpPageProps> = ({ onNavigate, onOpenAdvice }) 
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-left space-y-10 bg-white">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-left space-y-10">
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Centro de Ayuda</span>
         <h1 className="text-3xl sm:text-4xl font-heading font-bold text-[#241B24] mt-1">

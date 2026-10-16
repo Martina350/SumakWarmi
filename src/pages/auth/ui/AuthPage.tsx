@@ -28,7 +28,7 @@ export const AuthPage: React.FC<{ onNavigate: (path: string) => void }> = ({ onN
     onNavigate('/mi-cuenta');
   };
   return (
-    <div className="max-w-md mx-auto px-4 py-12 space-y-6">
+    <div className="max-w-md mx-auto px-4 py-12 text-left space-y-6">
       <div className="text-center">
         <h1 className="text-2xl font-heading font-bold">{mode === 'login' ? 'Bienvenida a SUMAKWARMI' : 'Crear tu cuenta'}</h1>
         <p className="text-sm text-[#665D65] mt-2">{mode === 'login' ? 'Ingresa tu correo para consultar tus compras y direcciones.' : 'Completa tus datos para tu primera compra.'}</p>

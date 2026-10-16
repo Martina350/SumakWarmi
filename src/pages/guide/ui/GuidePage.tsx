@@ -9,7 +9,7 @@ interface GuidePageProps {
 
 export const GuidePage: React.FC<GuidePageProps> = ({ onNavigate, onOpenAdvice }) => {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-left space-y-10 bg-white">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-left space-y-10">
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">
           Educación & Orientación

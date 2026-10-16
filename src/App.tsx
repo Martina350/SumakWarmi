@@ -128,7 +128,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#241B24]">
+    <div className="min-h-screen flex flex-col bg-[#FFF7F9] text-[#241B24]">
       <Header currentPath={currentPath} onNavigate={navigate} />
       {storageError && (
         <p role="alert" className="p-4 bg-[#FDEBED] text-[#B42336] text-sm">

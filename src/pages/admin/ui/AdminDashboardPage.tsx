@@ -19,7 +19,7 @@ export const AdminDashboardPage: React.FC = () => {
 
   if (!currentUser || currentUser.role !== 'ADMIN') {
     return (
-      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4 bg-white">
+      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4">
         <ShieldAlert className="w-12 h-12 text-[#B42336] mx-auto" />
         <h2 className="text-xl font-bold font-heading text-[#241B24]">Panel exclusivo para Administrador</h2>
         <p className="text-xs text-[#665D65]">Inicia sesión con una cuenta administrativa activa.</p>
@@ -34,16 +34,17 @@ export const AdminDashboardPage: React.FC = () => {
 
   return (
     <StaffLayout
-          tabs={[
-            { id: 'orders', label: 'Todos los pedidos', count: orders.length },
-            { id: 'catalog', label: 'Catálogo & Precios', count: products.length },
-            { id: 'inventory', label: 'Inventario' },
-            { id: 'sellers', label: 'Vendedores & Accesos' },
-            { id: 'audit', label: 'Auditoría inmutable' },
-          ]}
-          activeTab={activeTab}
-          onChange={setActiveTab}
-        >
+      tabs={[
+        { id: 'orders', label: 'Todos los pedidos', count: orders.length },
+        { id: 'catalog', label: 'Catálogo & Precios', count: products.length },
+        { id: 'inventory', label: 'Inventario' },
+        { id: 'sellers', label: 'Vendedores & Accesos' },
+        { id: 'audit', label: 'Auditoría inmutable' },
+      ]}
+      activeTab={activeTab}
+      onChange={setActiveTab}
+    >
+      <div className="space-y-8 text-left">
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Dirección & Control Global</span>
         <h1 className="text-3xl font-heading font-bold text-[#241B24] mt-0.5">Panel de Administración · SUMAKWARMI</h1>

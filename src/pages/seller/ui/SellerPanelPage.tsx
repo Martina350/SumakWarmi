@@ -18,7 +18,7 @@ export const SellerPanelPage: React.FC = () => {
 
   if (!currentUser || currentUser.role !== 'SELLER') {
     return (
-      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4 bg-white">
+      <div className="max-w-md mx-auto py-20 px-4 text-center space-y-4">
         <ShieldAlert className="w-12 h-12 text-[#B42336] mx-auto" />
         <h2 className="text-xl font-bold font-heading text-[#241B24]">Acceso restringido</h2>
         <p className="text-xs text-[#665D65]">Vista exclusiva para personal comercial autorizado.</p>
@@ -40,16 +40,16 @@ export const SellerPanelPage: React.FC = () => {
 
   return (
     <StaffLayout
-          tabs={[
-            { id: 'unassigned', label: 'Sin asignar', count: orders.filter((o) => !o.assignedSellerId).length },
-            { id: 'my-orders', label: 'Mis pedidos', count: myAssignedOrders.length },
-            { id: 'pending-payment', label: 'Por revisar pago', count: pendingVerificationCount },
-            { id: 'to-dispatch', label: 'Por despachar', count: toDispatchCount },
-            { id: 'dispatched', label: 'Despachados / Entregados' },
-          ]}
-          activeTab={activeTab}
-          onChange={setActiveTab}
-        >
+      tabs={[
+        { id: 'unassigned', label: 'Sin asignar', count: orders.filter((o) => !o.assignedSellerId).length },
+        { id: 'my-orders', label: 'Mis pedidos', count: myAssignedOrders.length },
+        { id: 'pending-payment', label: 'Por revisar pago', count: pendingVerificationCount },
+        { id: 'to-dispatch', label: 'Por despachar', count: toDispatchCount },
+        { id: 'dispatched', label: 'Despachados / Entregados' },
+      ]}
+      activeTab={activeTab}
+      onChange={setActiveTab}
+    >
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Operación Comercial</span>
         <h1 className="text-3xl font-heading font-bold text-[#241B24] mt-0.5">Panel de Vendedor · {currentUser.name}</h1>
