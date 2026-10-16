@@ -44,7 +44,6 @@ export const AdminDashboardPage: React.FC = () => {
       activeTab={activeTab}
       onChange={setActiveTab}
     >
-      <div className="space-y-8 text-left">
       <div>
         <span className="text-xs font-semibold text-[#A91E50] uppercase tracking-wider">Dirección & Control Global</span>
         <h1 className="text-3xl font-heading font-bold text-[#241B24] mt-0.5">Panel de Administración · SUMAKWARMI</h1>
