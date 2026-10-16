@@ -47,17 +47,21 @@ export const Modal: React.FC<ModalProps> = ({
       }
     };
     if (isOpen) {
+      const prev = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
       dialogRef.current
         ?.querySelector<HTMLElement>('button, input, [tabindex="0"]')
         ?.focus();
+
+      return () => {
+        document.body.style.overflow = prev === 'hidden' ? '' : (prev || '');
+        window.removeEventListener('keydown', handleKeyDown);
+        if (previous?.isConnected) previous.focus();
+      };
+    } else {
+      document.body.style.overflow = '';
     }
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-      if (isOpen && previous?.isConnected) previous.focus();
-    };
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -69,9 +73,15 @@ export const Modal: React.FC<ModalProps> = ({
     xl: 'max-w-4xl',
   };
 
+  const isDrawer = placement === 'right';
+
   return (
     <div
-      className={`fixed inset-0 z-50 flex ${placement === 'right' ? 'items-stretch justify-end' : 'items-center justify-center p-4 sm:p-6'} overflow-y-auto animate-fadeIn`}
+      className={`fixed inset-0 z-50 flex ${
+        isDrawer
+          ? 'items-stretch justify-end'
+          : 'items-center justify-center p-3 sm:p-5 md:p-6'
+      } overflow-hidden animate-fadeIn`}
     >
       <div
         className="fixed inset-0 bg-[#241B24]/60 backdrop-blur-xs transition-opacity"
@@ -79,37 +89,46 @@ export const Modal: React.FC<ModalProps> = ({
         aria-hidden="true"
       />
       <div
-        className={`relative w-full ${widths[maxWidth]} bg-white ${placement === 'right' ? 'h-full overflow-y-auto' : 'rounded-[20px] my-8'} border border-[#E9DFE4] shadow-xl p-6 sm:p-8 z-10 transition-transform duration-200`}
+        className={`relative w-full ${widths[maxWidth]} bg-white ${
+          isDrawer
+            ? 'h-full max-h-screen border-l rounded-none'
+            : 'max-h-[min(90vh,calc(100dvh-2rem))] sm:max-h-[min(88vh,calc(100dvh-3rem))] rounded-[24px] border my-auto'
+        } border-[#E9DFE4] shadow-2xl z-10 flex flex-col overflow-hidden transition-transform duration-200`}
         role="dialog"
         ref={dialogRef}
         aria-labelledby={title ? titleId : undefined}
         aria-modal="true"
       >
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <div>
+        {/* Sticky Pinned Header */}
+        <div className="flex items-start justify-between gap-4 p-5 sm:p-6 border-b border-[#E9DFE4] shrink-0 bg-white sticky top-0 z-10">
+          <div className="min-w-0 pr-2">
             {title && (
               <h3
                 id={titleId}
-                className="text-xl font-bold text-[#241B24] font-heading"
+                className="text-lg sm:text-xl font-bold text-[#241B24] font-heading leading-snug"
               >
                 {title}
               </h3>
             )}
             {description && (
-              <p className="text-xs sm:text-sm text-[#665D65] mt-1">
+              <p className="text-xs sm:text-sm text-[#665D65] mt-1 leading-relaxed">
                 {description}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#665D65] hover:text-[#241B24] hover:bg-[#FBE7ED] transition-colors cursor-pointer"
+            className="p-1.5 -mr-1 -mt-1 rounded-xl text-[#665D65] hover:text-[#241B24] hover:bg-[#FBE7ED] transition-colors cursor-pointer shrink-0"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
-        <div>{children}</div>
+
+        {/* Scrollable Modal Content */}
+        <div className="flex-1 overflow-y-auto p-5 sm:p-6 overscroll-contain custom-scrollbar">
+          {children}
+        </div>
       </div>
     </div>
   );

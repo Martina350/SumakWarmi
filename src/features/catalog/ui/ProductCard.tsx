@@ -64,7 +64,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             src={product.featuredImage}
             onError={() => setFailedImage(product.featuredImage!)}
             alt={product.imageAlt || product.name}
-            className="absolute inset-0 w-full h-full object-contain bg-white p-4"
+            className="absolute inset-0 w-full h-full object-contain bg-white p-3 group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
           <>

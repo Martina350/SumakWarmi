@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { useSessionStore } from '../../../entities/session/index.ts';
 import {
   staffSessionActions,
@@ -7,6 +7,7 @@ import {
 } from '../../../entities/session/model/staffSessionStore.ts';
 import { Input } from '../../../shared/ui/Input.tsx';
 import { Button } from '../../../shared/ui/Button.tsx';
+import logoImg from '../../../assets/romina-sumak-warmi-logotipo-2.png';
 
 export function StaffLoginPage({
   onNavigate,
@@ -17,6 +18,7 @@ export function StaffLoginPage({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
     const user = users.find(
@@ -42,46 +44,104 @@ export function StaffLoginPage({
       );
     }
   };
+
   return (
-    <main className="min-h-screen bg-[#F4F0F2] grid lg:grid-cols-2">
-      <div className="hidden lg:flex flex-col justify-between bg-[#302333] text-white p-14">
-        <span className="text-xl font-bold tracking-wider">
-          SUMAKWARMI<span className="text-[#EE839F]">.</span>
-        </span>
-        <div className="max-w-lg space-y-6">
-          <ShieldCheck className="w-12 h-12 text-[#EE839F]" />
-          <p className="text-sm uppercase tracking-[0.25em] text-[#EE839F]">
-            Espacio de trabajo
-          </p>
-          <p className="text-5xl font-heading font-semibold leading-tight">
+    <main className="min-h-screen bg-[#FFF7F9] grid lg:grid-cols-2 selection:bg-[#FBE7ED] selection:text-[#A91E50]">
+      {/* Brand & Workspace Left Panel */}
+      <div className="hidden lg:flex flex-col justify-between bg-[#EE839F] text-white p-12 xl:p-16 relative overflow-hidden shadow-2xl">
+        {/* Decorative soft glowing elements using palette accents */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#D52C69]/20 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Top Logo */}
+        <div className="relative z-10">
+          <button
+            onClick={() => onNavigate('/')}
+            className="group flex items-center gap-3 cursor-pointer text-left"
+            aria-label="Ir al inicio de SUMAKWARMI"
+          >
+            <img
+              src={logoImg}
+              alt="Romina Sumak Warmi"
+              className="h-12 w-auto object-contain transition-transform group-hover:scale-105 drop-shadow-sm"
+            />
+          </button>
+        </div>
+
+        {/* Center Content */}
+        <div className="max-w-lg space-y-6 relative z-10 my-auto py-12">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-[0.2em] border border-white/30">
+            <ShieldCheck className="w-4 h-4 text-white" />
+            <span>Espacio de trabajo seguro</span>
+          </div>
+
+          <h2 className="text-4xl xl:text-5xl font-heading font-extrabold text-white leading-[1.15] tracking-tight">
             Todo tu equipo.
             <br />
-            Cada proceso en su lugar.
+            <span className="text-[#FFF7F9]">Cada proceso en su lugar.</span>
+          </h2>
+
+          <p className="text-white/95 text-base leading-relaxed">
+            Administración y ventas con herramientas especializadas, trazabilidad auditada y accesos correspondientes a cada función.
           </p>
-          <p className="text-white/65 leading-relaxed">
-            Administración y ventas, con herramientas y accesos correspondientes
-            a cada función.
-          </p>
+
+          <div className="pt-2 flex flex-wrap gap-2.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 backdrop-blur-xs text-xs font-medium text-white border border-white/25">
+              <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+              <span>Gestión de pedidos</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 backdrop-blur-xs text-xs font-medium text-white border border-white/25">
+              <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+              <span>Auditoría de pagos</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 backdrop-blur-xs text-xs font-medium text-white border border-white/25">
+              <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+              <span>Despachos Servientrega</span>
+            </div>
+          </div>
         </div>
-        <p className="text-xs text-white/50">Gestión interna · SUMAKWARMI</p>
+
+        {/* Bottom Note */}
+        <div className="relative z-10 pt-6 border-t border-white/20 flex items-center justify-between text-xs text-white/85">
+          <span>Gestión interna · SUMAKWARMI</span>
+          <span>Ecuador</span>
+        </div>
       </div>
-      <div className="flex flex-col justify-center px-6 py-12 sm:px-16">
+
+      {/* Right Form Panel */}
+      <div className="flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 lg:px-20 bg-[#FFF7F9]">
         <div className="w-full max-w-md mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#A91E50]">
-            Acceso del equipo
-          </span>
-          <h1 className="text-3xl font-bold mt-3">Bienvenida de nuevo</h1>
-          <p className="text-sm text-[#665D65] mt-3 mb-8">
-            Ingresa con tu cuenta para abrir tu espacio de trabajo.
+          {/* Mobile Logo */}
+          <div className="lg:hidden mb-8 flex justify-center">
+            <div className="p-3 bg-[#EE839F] rounded-2xl shadow-sm inline-flex">
+              <img
+                src={logoImg}
+                alt="Romina Sumak Warmi"
+                className="h-10 w-auto object-contain"
+              />
+            </div>
+          </div>
+
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FBE7ED] text-[#A91E50] text-xs font-bold uppercase tracking-widest border border-[#EE839F]/30 mb-3">
+            <span>Acceso del equipo</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-bold font-heading text-[#241B24] tracking-tight">
+            Bienvenida de nuevo
+          </h1>
+          <p className="text-sm text-[#665D65] mt-2 mb-8 leading-relaxed">
+            Ingresa con tus credenciales asignadas para abrir tu panel de trabajo.
           </p>
+
           <form
             onSubmit={submit}
-            className="space-y-5 bg-white p-6 sm:p-8 rounded-3xl border border-[#E9DFE4] shadow-sm"
+            className="space-y-5 bg-white p-7 sm:p-9 rounded-[24px] border border-[#E9DFE4] shadow-xl shadow-[#D52C69]/5"
           >
             <Input
               id="staff-email"
               label="Correo electrónico"
               type="email"
+              placeholder="tu.correo@sumakwarmi.com"
               autoComplete="username"
               required
               value={email}
@@ -94,6 +154,7 @@ export function StaffLoginPage({
               id="staff-password"
               label="Contraseña"
               type="password"
+              placeholder="••••••••"
               autoComplete="current-password"
               required
               value={password}
@@ -102,29 +163,35 @@ export function StaffLoginPage({
                 setError('');
               }}
             />
+
             {error && (
-              <p role="alert" className="text-sm text-[#B42336]">
+              <div
+                role="alert"
+                className="p-3.5 bg-[#FDEBED] border border-[#B42336]/20 rounded-xl text-xs font-medium text-[#B42336] leading-relaxed"
+              >
                 {error}
-              </p>
+              </div>
             )}
+
             <Button
               type="submit"
-              className="w-full"
+              className="w-full h-12 text-sm font-semibold !bg-[#D52C69] hover:!bg-[#A91E50] !text-white rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer"
               icon={<ArrowRight className="w-4 h-4" />}
             >
               Ingresar al sistema
             </Button>
-            <p className="text-xs text-[#665D65] leading-relaxed">
-              Tu cuenta determina el panel al que puedes acceder. Si necesitas
-              ayuda con tu acceso, contacta a administración.
-            </p>
+
+            <div className="p-3.5 bg-[#FFF7F9] rounded-xl border border-[#E9DFE4] text-xs text-[#665D65] leading-relaxed">
+              Tu cuenta determina el panel al que puedes acceder. Si necesitas ayuda con tu acceso, contacta a administración.
+            </div>
           </form>
+
           <button
             onClick={() => onNavigate('/')}
-            className="mt-8 flex items-center gap-2 text-sm text-[#665D65] hover:text-[#A91E50] cursor-pointer"
+            className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#665D65] hover:text-[#A91E50] transition-colors cursor-pointer group"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Volver al inicio
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-[#A91E50]" />
+            <span>Volver a la tienda</span>
           </button>
         </div>
       </div>

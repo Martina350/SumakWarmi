@@ -448,6 +448,13 @@ export function normalizeState(source: BusinessState): BusinessState {
   state.products.forEach((p) => {
     p.version ??= 1;
     p.updatedAt ??= now();
+    const seed = ALL_INITIAL_PRODUCTS.find((init) => init.id === p.id);
+    if (seed?.featuredImage && !p.featuredImage) {
+      p.featuredImage = seed.featuredImage;
+    }
+    if (seed?.galleryImages && (!p.galleryImages || p.galleryImages.length === 0)) {
+      p.galleryImages = seed.galleryImages;
+    }
     p.variants.forEach((v) => {
       v.stockReservado = 0;
       v.active ??= true;
@@ -537,7 +544,7 @@ function bootstrap() {
       throw new Error(
         'Versión de datos no compatible. Exporta los datos antes de restablecer.',
       );
-    return existing as BusinessState;
+    return normalizeState(existing as BusinessState);
   }
   const initial = makeInitialState();
   const catalog = readLegacy('sumakwarmi_catalog_v1');

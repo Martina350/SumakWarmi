@@ -167,6 +167,7 @@ export function WorkspacePage({
     content = (
       <Dashboard
         user={user}
+        run={run}
         navigate={navigate}
         reportMode={section !== 'dashboard'}
         sellerId={

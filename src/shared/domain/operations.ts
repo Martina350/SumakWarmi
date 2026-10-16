@@ -1030,6 +1030,29 @@ export const operations = {
       s.operations[op] = { entityId: orderId, actorId: user.id };
     });
   },
+  addNote(orderId: string, note: string, version: number) {
+    return transaction((s) => {
+      const o = target(s, orderId);
+      const user = staff(s);
+      if (!user) throw new Error('Usuario no autenticado.');
+      if (user.role !== 'ADMIN' && o.assignedSellerId !== user.id) {
+        throw new Error('Solo el vendedor asignado o un administrador pueden agregar notas.');
+      }
+      checkVersion(o, version);
+      needReason(note);
+      event(s, o, user, 'INTERNAL_NOTE', note, o.status, false);
+      audit(
+        s,
+        user,
+        'INTERNAL_NOTE',
+        orderId,
+        note,
+        null,
+        o,
+        generateId('operation'),
+      );
+    });
+  },
   cancel(orderId: string, reason: string, version: number) {
     return transaction((s) => {
       const o = target(s, orderId);

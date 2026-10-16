@@ -17,7 +17,14 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 }) => {
   const { products } = useCatalogStore();
   const [failedImage, setFailedImage] = React.useState('');
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
   const product = products.find((p) => p.slug === slug);
+
+  // Reset selected image on slug change
+  React.useEffect(() => {
+    setSelectedImage(null);
+  }, [slug]);
+
   if (!product)
     return (
       <div className="max-w-xl mx-auto p-8 my-12 text-center space-y-4">
@@ -34,6 +41,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       </div>
     );
 
+  const activeImage = selectedImage || product.featuredImage;
   const relatedProducts = products
     .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
     .slice(0, 3);
@@ -51,13 +59,13 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         {/* Left: Product Showcase */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="aspect-4/3 rounded-[24px] bg-gradient-to-br from-[#FFF7F9] via-white to-[#FFF7F9] border border-[#E9DFE4] flex flex-col items-center justify-center p-8 text-center shadow-xs">
-            {product.featuredImage && failedImage !== product.featuredImage ? (
+          <div className="aspect-4/3 rounded-[24px] bg-gradient-to-br from-[#FFF7F9] via-white to-[#FFF7F9] border border-[#E9DFE4] flex flex-col items-center justify-center p-8 text-center shadow-xs overflow-hidden">
+            {activeImage && failedImage !== activeImage ? (
               <img
-                src={product.featuredImage}
-                onError={() => setFailedImage(product.featuredImage!)}
+                src={activeImage}
+                onError={() => setFailedImage(activeImage!)}
                 alt={product.imageAlt || product.name}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain max-h-[380px] transition-transform duration-300"
               />
             ) : (
               <>
@@ -75,19 +83,40 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </div>
           {!!product.galleryImages?.length && (
             <div className="flex gap-3 flex-wrap">
+              {product.featuredImage && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedImage(product.featuredImage!)}
+                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all p-1.5 bg-white cursor-pointer ${
+                    (activeImage === product.featuredImage)
+                      ? 'border-[#D52C69] ring-2 ring-[#D52C69]/20'
+                      : 'border-[#E9DFE4] hover:border-[#EE839F]'
+                  }`}
+                >
+                  <img
+                    src={product.featuredImage}
+                    alt={product.name}
+                    className="w-full h-full object-contain"
+                  />
+                </button>
+              )}
               {product.galleryImages.map((url, i) => (
-                <a
+                <button
+                  type="button"
                   key={`${url}-${i}`}
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
+                  onClick={() => setSelectedImage(url)}
+                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all p-1.5 bg-white cursor-pointer ${
+                    activeImage === url
+                      ? 'border-[#D52C69] ring-2 ring-[#D52C69]/20'
+                      : 'border-[#E9DFE4] hover:border-[#EE839F]'
+                  }`}
                 >
                   <img
                     src={url}
                     alt={`${product.name}, imagen ${i + 1}`}
-                    className="w-24 h-24 object-contain border border-[#E9DFE4] rounded-xl"
+                    className="w-full h-full object-contain"
                   />
-                </a>
+                </button>
               ))}
             </div>
           )}

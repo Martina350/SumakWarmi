@@ -1,4 +1,5 @@
 import { Product } from '../types/index.ts';
+import esterilizadorImg from '../../assets/esterilizador-electrico.jpg';
 
 export const MENSTRUAL_PRODUCTS_PART2: Product[] = [
   {
@@ -13,6 +14,7 @@ export const MENSTRUAL_PRODUCTS_PART2: Product[] = [
     status: 'ACTIVE',
     isFeatured: true,
     priceSource: 'site',
+    featuredImage: esterilizadorImg,
     variants: [
       { id: 'var-est-elec-std', sku: 'SW-EST-EL', name: 'Blanco Arena 110V', price: 22.0, stockActual: 10, stockReservado: 1, stockMinimo: 3 },
     ],

@@ -23,6 +23,7 @@ import {
   staffSessionActions,
 } from '../../../entities/session/model/staffSessionStore.ts';
 import { TabItem } from '../../../shared/ui/Tabs.tsx';
+import logoImg from '../../../assets/romina-sumak-warmi-logotipo-2.png';
 
 const icons: Record<string, typeof LayoutDashboard> = {
   dashboard: LayoutDashboard,
@@ -117,8 +118,13 @@ export function StaffLayout({
     setMenuOpen(false);
     menuRef.current?.focus();
   };
+
+  useEffect(() => {
+    document.body.style.overflow = '';
+  }, [activeTab]);
+
   return (
-    <div className="min-h-screen bg-[#F4F0F2] text-[#241B24] lg:flex">
+    <div className="min-h-screen bg-[#F4F0F2] text-[#241B24] lg:flex overflow-x-hidden">
       {menuOpen && (
         <button
           aria-label="Cerrar menú"
@@ -130,28 +136,30 @@ export function StaffLayout({
         ref={sidebarRef}
         inert={mobile && !menuOpen}
         aria-label={`Menú de ${title.toLowerCase()}`}
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#302333] text-white flex flex-col transition-transform lg:translate-x-0 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#EE839F] text-white flex flex-col transition-transform lg:translate-x-0 ${menuOpen ? 'translate-x-0' : '-translate-x-full'} shadow-xl border-r border-white/20`}
       >
-        <div className="px-6 pt-7 pb-6 border-b border-white/10 flex items-start justify-between">
+        <div className="px-6 pt-6 pb-5 border-b border-white/20 flex items-start justify-between">
           <div>
-            <p className="text-lg font-bold tracking-wide">
-              SUMAKWARMI<span className="text-[#EE839F]">.</span>
-            </p>
-            <p className="mt-2 text-xs text-white/55">
+            <img
+              src={logoImg}
+              alt="Romina Sumak Warmi"
+              className="h-10 w-auto object-contain drop-shadow-xs"
+            />
+            <p className="mt-2 text-xs text-white/80 font-medium">
               {title} · Sistema de gestión
             </p>
           </div>
           <button
             aria-label="Cerrar menú"
             onClick={closeMenu}
-            className="lg:hidden p-1"
+            className="lg:hidden p-1 text-white/80 hover:text-white"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
         <nav
           aria-label={`Navegación de ${title.toLowerCase()}`}
-          className="px-3 py-3 space-y-1 flex-1 min-h-0 overflow-y-auto"
+          className="px-3 py-3 space-y-1 flex-1 min-h-0 overflow-y-auto sidebar-scrollbar"
         >
           {tabs.map((tab, index) => {
             const Icon = icons[tab.id] || LayoutDashboard;
@@ -162,7 +170,7 @@ export function StaffLayout({
             return (
               <React.Fragment key={tab.id}>
                 {group !== previousGroup && (
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/45 px-3 pt-4 pb-2">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/70 px-3 pt-4 pb-1.5">
                     {group}
                   </p>
                 )}
@@ -173,12 +181,20 @@ export function StaffLayout({
                     if (mobile) closeMenu();
                     window.scrollTo(0, 0);
                   }}
-                  className={`w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-left transition-colors cursor-pointer ${tab.id === activeTab ? 'bg-[#A91E50] text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'}`}
+                  className={`w-full flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-left transition-colors cursor-pointer font-medium ${
+                    tab.id === activeTab
+                      ? 'bg-[#A91E50] text-white shadow-xs font-semibold'
+                      : 'text-white/85 hover:bg-white/20 hover:text-white'
+                  }`}
                 >
                   <Icon className="w-4 h-4 shrink-0" />
                   <span className="flex-1">{tab.label}</span>
                   {typeof tab.count === 'number' && (
-                    <span className="rounded-md bg-white/10 px-1.5 py-0.5 text-[11px]">
+                    <span className={`rounded-md px-1.5 py-0.5 text-[11px] font-bold ${
+                      tab.id === activeTab
+                        ? 'bg-white/25 text-white'
+                        : 'bg-white/20 text-white'
+                    }`}>
                       {tab.count}
                     </span>
                   )}
@@ -187,16 +203,16 @@ export function StaffLayout({
             );
           })}
         </nav>
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-white/20 bg-white/5">
           <div className="flex items-center gap-3 p-2 mb-2">
-            <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#EE839F] font-bold">
+            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white font-bold border border-white/30">
               {currentUser?.name.charAt(0)}
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold truncate">
+              <p className="text-xs font-semibold truncate text-white">
                 {currentUser?.name}
               </p>
-              <p className="text-[11px] text-white/50 mt-1">
+              <p className="text-[11px] text-white/75 mt-0.5">
                 {isAdmin ? 'Administradora' : 'Equipo de ventas'}
               </p>
             </div>
@@ -210,7 +226,7 @@ export function StaffLayout({
                 window.alert(String(e));
               }
             }}
-            className="flex items-center gap-3 p-3 text-xs text-white/70 hover:text-white hover:bg-white/10 rounded-xl w-full cursor-pointer"
+            className="flex items-center gap-3 p-2.5 text-xs text-white/85 hover:text-white hover:bg-white/20 rounded-xl w-full cursor-pointer transition-colors"
           >
             <LogOut className="w-4 h-4" />
             Cerrar sesión

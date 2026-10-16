@@ -17,6 +17,7 @@ import {
 } from '../../../shared/lib/statusLabels.ts';
 import { Heading, Field, Empty, Pager, money, type Run } from './common.tsx';
 import { Modal } from '../../../shared/ui/Modal.tsx';
+import { OrderManagementModal } from './OrderManagementModal.tsx';
 
 export function SalesManager({
   user,
@@ -266,7 +267,7 @@ export function SalesManager({
                       </td>
                       <td>
                         <button
-                          onClick={() => navigate(`/ventas/${p.orderId}`)}
+                          onClick={() => setQuickId(p.orderId)}
                         >
                           Abrir expediente
                         </button>
@@ -337,7 +338,7 @@ export function SalesManager({
                         <button onClick={() => setQuickId(o.id)}>
                           Vista rápida
                         </button>
-                        <button onClick={() => navigate(`/ventas/${o.id}`)}>
+                        <button onClick={() => setQuickId(o.id)}>
                           Gestionar
                         </button>
                         {!o.assignedSellerId &&
@@ -375,40 +376,13 @@ export function SalesManager({
           )}
         </Pager>
       )}
-      {quick && (
-        <Modal
-          isOpen
-          onClose={() => setQuickId(null)}
-          title={`Vista rápida · ${quick.orderNumber}`}
-          placement="right"
-        >
-          <div className="system-workspace">
-            <p>
-              {quick.customerName} · {formatCurrency(quick.total)}
-            </p>
-            <p>Pago: {getPaymentStatusLabel(quick.paymentStatus).label}</p>
-            <p>Envío: {getShipmentStatusLabel(quick.shipmentStatus).label}</p>
-            <p>Responsable: {quick.assignedSellerName || 'Sin responsable'}</p>
-            {quick.items.map((item) => (
-              <div key={item.variantId} className="system-order-line">
-                <span>
-                  {item.productName} · {item.variantName}
-                </span>
-                <strong>× {item.quantity}</strong>
-              </div>
-            ))}
-            {quick.incident && (
-              <p className="system-warning">{quick.incident}</p>
-            )}
-            <button
-              className="system-primary"
-              onClick={() => navigate(`/ventas/${quick.id}`)}
-            >
-              Abrir detalle operativo
-            </button>
-          </div>
-        </Modal>
-      )}
+      <OrderManagementModal
+        orderId={quickId}
+        isOpen={!!quickId}
+        onClose={() => setQuickId(null)}
+        user={user}
+        run={run}
+      />
     </>
   );
 }
